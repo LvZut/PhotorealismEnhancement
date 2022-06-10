@@ -315,7 +315,7 @@ class EPEExperiment(ee.GANExperiment):
 				pass
 			log_scalar[f'rdf{i}']      = accuracy(rm.detach()) # percentage of fake predicted as real
 
-			self.writer.add_scalar(f'Loss/fpd{i}', accuracy(rm.detach()), self.i)
+			self.writer.add_scalar(f'Loss/fpr{i}', accuracy(rm.detach()), self.i)
 
 			ds_loss = self.gan_loss.forward_fake(rm).mean()
 			loss, log_scalar[f'ds{i}'] = tee_loss(loss, ds_loss)
@@ -326,7 +326,7 @@ class EPEExperiment(ee.GANExperiment):
 		del rm
 		del realism_maps
 
-		self.writer.add_scalar('Loss/Discriminator_back', loss)
+		self.writer.add_scalar('Loss/Discriminator_back', loss, self.i)
 
 		loss.backward()
 
