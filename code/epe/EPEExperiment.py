@@ -27,6 +27,8 @@ from epe.matching import MatchedCrops, IndependentCrops
 torch.backends.cudnn.enabled = True
 torch.backends.cudnn.benchmark = True
 
+from torch.utils.tensorboard import SummaryWriter
+
 logger = logging.getLogger('main')
 
 
@@ -90,6 +92,7 @@ class EPEExperiment(ee.GANExperiment):
 		super(EPEExperiment, self).__init__(args)
 		self.collate_fn_train = ds.JointEPEBatch.collate_fn
 		self.collate_fn_val   = ds.EPEBatch.collate_fn
+		self.writer = SummaryWriter()
 		pass
 
 
@@ -237,9 +240,18 @@ class EPEExperiment(ee.GANExperiment):
 		log_info = {}
 		for i, rm in enumerate(realism_maps):
 			loss, log_info[f'gs{i}'] = tee_loss(loss, self.gan_loss.forward_gen(rm[0,:,:,:].unsqueeze(0)).mean())
+			self.writer.add_scalar(f'Loss/gs{i}', log_info[f'gs{i}'], self.i)
 			pass
 
+
+
 		loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
+
+		# log generator loss
+		self.writer.add_scalar('Loss/Generator_vgg', log_info['vgg'], self.i)
+		self.writer.add_scalar('Loss/Generator_back', loss, self.i)
+		
+
 		loss.backward()
 
 		return log_info, \
@@ -298,10 +310,19 @@ class EPEExperiment(ee.GANExperiment):
 				pred_labels[i] = [(rm.detach() < 0.5).float().reshape(1,-1)]
 				pass
 			log_scalar[f'rdf{i}']      = accuracy(rm.detach()) # percentage of fake predicted as real
-			loss, log_scalar[f'ds{i}'] = tee_loss(loss, self.gan_loss.forward_fake(rm).mean())
+
+			self.writer.add_scalar(f'Loss/fpd{i}', accuracy(rm.detach()), self.i)
+
+			ds_loss = self.gan_loss.forward_fake(rm).mean()
+			loss, log_scalar[f'ds{i}'] = tee_loss(loss, ds_loss)
+
+			self.writer.add_scalar(f'Loss/ds{i}', ds_loss, self.i)
+
 			pass
 		del rm
 		del realism_maps
+
+		self.writer.add_scalar('Loss/Discriminator_back', loss)
 
 		loss.backward()
 
@@ -330,7 +351,10 @@ class EPEExperiment(ee.GANExperiment):
 				pred_labels[i] = [(rm.detach() > 0.5).float().reshape(1,-1)]
 				pass
 
-			log_scalar[f'rdr{i}'] = accuracy(rm.detach()) # percentage of real predicted as real	
+			log_scalar[f'rdr{i}'] = accuracy(rm.detach()) # percentage of real predicted as real
+
+			self.writer.add_scalar(f'Loss/rpr{i}', accuracy(rm.detach()), self.i)
+
 			loss += self.gan_loss.forward_real(rm).mean()
 			pass
 		del rm
@@ -341,6 +365,9 @@ class EPEExperiment(ee.GANExperiment):
 			loss.backward(retain_graph=True)
 			self._log.debug(f'Computing penalty on real: {loss} from i:{batch_real.img.shape}.')
 			reg_loss, log_scalar['reg'] = tee_loss(0, real_penalty(loss, batch_real.img))
+
+			self.writer.add_scalar('Loss/reg', log_scalar['reg'], self.i)
+
 			(self.reg_weight * reg_loss).backward()
 		else:
 			loss.backward()
@@ -385,6 +412,8 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
 	ee.init_logging(args)
+
+	
 
 	experiment = EPEExperiment(args)
 	experiment.run()
