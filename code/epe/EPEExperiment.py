@@ -92,7 +92,7 @@ class EPEExperiment(ee.GANExperiment):
 		super(EPEExperiment, self).__init__(args)
 		self.collate_fn_train = ds.JointEPEBatch.collate_fn
 		self.collate_fn_val   = ds.EPEBatch.collate_fn
-		self.writer = SummaryWriter()
+		self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix=args.name)
 		pass
 
 
