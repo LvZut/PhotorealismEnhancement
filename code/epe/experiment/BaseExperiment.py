@@ -530,49 +530,50 @@ class BaseExperiment:
 
                 
                 try:
-                        # with torch.profiler.profile(
-                        #       activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA],
-   #                    schedule=self._profiler_schedule(),
-   #                    on_trace_ready=torch.profiler.tensorboard_trace_handler(self._profile_path),
-   #                    record_shapes=False,
-   #                    profile_memory=self._profile_memory,
-   #                    with_stack=True) as self._profiler:
+                        with torch.profiler.profile(
+                                activities=[torch.profiler.ProfilerActivity.CPU,torch.profiler.ProfilerActivity.CUDA],
+                                schedule=self._profiler_schedule(),
+                                on_trace_ready=torch.profiler.tensorboard_trace_handler(self._profile_path),
+                                record_shapes=False,
+                                profile_memory=self._profile_memory,
+                                with_stack=True) as self._profiler:
                         # with torch.autograd.profiler.profile(enabled=self._profile, use_cuda=self._profile_gpu, profile_memory=self._profile_memory, with_stack=self._profile_stack) as prof:         
-                        while not self._should_stop(e, self.i):
-                                for batch in self.loader:
-                                        if self._should_stop(e, self.i):
-                                                break
+                        
+                                while not self._should_stop(e, self.i):
+                                        for batch in self.loader:
+                                                if self._should_stop(e, self.i):
+                                                        break
 
-                                        log_scalar, log_img = self._train_network(batch.to(self.device))
-                                        if self._log.isEnabledFor(logging.DEBUG):
-                                                self._log.debug(f'GPU memory allocated: {torch.cuda.memory_allocated(device=self.device)}')
+                                                log_scalar, log_img = self._train_network(batch.to(self.device))
+                                                if self._log.isEnabledFor(logging.DEBUG):
+                                                        self._log.debug(f'GPU memory allocated: {torch.cuda.memory_allocated(device=self.device)}')
+                                                        pass
+                                                
+                                                self._log_sync.update(self.i, log_scalar)
+
+                                                self._dump({**log_img}, force=self._log.isEnabledFor(logging.DEBUG))
+                                                del log_img
+                                                del batch
+                                                
+                                                self._log_sync.print(self.i)
+                                                
+
+                                                if self._should_save_iteration(self.i):
+                                                        self._save_model(iterations=self.i)
+                                                        pass
+
+                                                if self.i > 0 and self.i % self.val_interval == 0:
+                                                        self.validate()
+                                                        pass
                                                 pass
-                                        
-                                        self._log_sync.update(self.i, log_scalar)
+                                                
+                                        e += 1
 
-                                        self._dump({**log_img}, force=self._log.isEnabledFor(logging.DEBUG))
-                                        del log_img
-                                        del batch
-                                        
-                                        self._log_sync.print(self.i)
-                                        
-
-                                        if self._should_save_iteration(self.i):
-                                                self._save_model(iterations=self.i)
+                                        if self._should_save_epoch(e):
+                                                self._save_model(epochs=e)
                                                 pass
-
-                                        if self.i > 0 and self.i % self.val_interval == 0:
-                                                self.validate()
-                                                pass
-                                        pass
-                                        
-                                e += 1
-
-                                if self._should_save_epoch(e):
-                                        self._save_model(epochs=e)
                                         pass
                                 pass
-                        pass
                 except:
                         if not self.no_safe_exit:
                                 self._save_model(iterations=self.i, reason='break')
