@@ -92,7 +92,6 @@ class EPEExperiment(ee.GANExperiment):
 		super(EPEExperiment, self).__init__(args)
 		self.collate_fn_train = ds.JointEPEBatch.collate_fn
 		self.collate_fn_val   = ds.EPEBatch.collate_fn
-		self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix=args.name)
 		pass
 
 
@@ -144,6 +143,11 @@ class EPEExperiment(ee.GANExperiment):
 
 		reg_cfg = dict(loss_cfg.get('reg', {}))
 		self.reg_weight = float(reg_cfg.get('weight', 1.0))
+
+
+	
+		self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix=self.real_name)
+
 		pass
 
 
