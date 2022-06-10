@@ -315,10 +315,10 @@ class BaseExperiment:
                 self._log_interval   = int(common_cfg.get('log_interval', 1))
 
                 prof_cfg = dict(self.cfg.get('profile', {}))
-                self._profile        = bool(prof_cfg.get('enable', False))
-                self._profile_gpu    = bool(prof_cfg.get('gpu', False))
-                self._profile_memory = bool(prof_cfg.get('memory', False))
-                self._profile_stack  = bool(prof_cfg.get('stack', False))
+                self._profile        = bool(prof_cfg.get('enable', True))
+                self._profile_gpu    = bool(prof_cfg.get('gpu', True))
+                self._profile_memory = bool(prof_cfg.get('memory', True))
+                self._profile_stack  = bool(prof_cfg.get('stack', True))
                 self._profile_path   = Path(prof_cfg.get('path', '.'))
 
                 self._log.debug(f'  unpin        : {self.unpin}')
@@ -537,7 +537,9 @@ class BaseExperiment:
                                 record_shapes=False,
                                 profile_memory=self._profile_memory,
                                 with_stack=True) as self._profiler:
-                        # with torch.autograd.profiler.profile(enabled=self._profile, use_cuda=self._profile_gpu, profile_memory=self._profile_memory, with_stack=self._profile_stack) as prof:         
+                        # with torch.autograd.profiler.profile(enabled=self._profile, 
+                        #         use_cuda=self._profile_gpu, profile_memory=self._profile_memory, 
+                        #         with_stack=self._profile_stack) as prof:         
                         
                                 while not self._should_stop(e, self.i):
                                         for batch in self.loader:

@@ -65,7 +65,7 @@ class GANExperiment(BaseExperiment):
 		self.disc_state.prepare()
 		log_scalar, log_img = self._run_discriminator(batch.fake, batch.real, i)
 		self.disc_state.update()
-		# self._profiler.step()
+		self._profiler.step()
 
 		return log_scalar, log_img
 
@@ -79,7 +79,7 @@ class GANExperiment(BaseExperiment):
 		self.gen_state.prepare()
 		log_scalar, log_img = self._run_generator(batch.fake, batch.real, i)				
 		self.gen_state.update()
-		# self._profiler.step()
+		self._profiler.step()
 
 		return log_scalar, log_img
 
