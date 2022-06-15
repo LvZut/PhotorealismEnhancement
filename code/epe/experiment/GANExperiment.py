@@ -173,6 +173,11 @@ class GANExperiment(BaseExperiment):
 				for bi, batch_fake in enumerate(loader_fake):
 					
 					gen_vars = self._forward_generator_fake(batch_fake.to(self.device))
+
+					# image to tensorboard once
+					if bi == 0:
+						self.imagewriter(self.evaluate_test(batch_fake.to(self.device), bi), self.i)
+
 					del batch_fake
 					
 					self.dump_val(self.i, bi, gen_vars)

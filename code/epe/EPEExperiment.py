@@ -244,7 +244,7 @@ class EPEExperiment(ee.GANExperiment):
 		log_info = {}
 		for i, rm in enumerate(realism_maps):
 			loss, log_info[f'gs{i}'] = tee_loss(loss, self.gan_loss.forward_gen(rm[0,:,:,:].unsqueeze(0)).mean())
-			self.writer.add_scalar(f'Loss/gs{i}', log_info[f'gs{i}'], self.i)
+			self.logwriter(f'Loss/gs{i}', log_info[f'gs{i}'], self.i)
 			pass
 
 
@@ -252,8 +252,8 @@ class EPEExperiment(ee.GANExperiment):
 		loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
 
 		# log generator loss
-		self.writer.add_scalar('Loss/Generator_vgg', log_info['vgg'], self.i)
-		self.writer.add_scalar('Loss/Generator_back', loss, self.i)
+		self.logwriter('Loss/Generator_vgg', log_info['vgg'], self.i)
+		self.logwriter('Loss/Generator_back', loss, self.i)
 		
 
 		loss.backward()
@@ -315,18 +315,18 @@ class EPEExperiment(ee.GANExperiment):
 				pass
 			log_scalar[f'rdf{i}']      = accuracy(rm.detach()) # percentage of fake predicted as real
 
-			self.writer.add_scalar(f'Loss/fpr{i}', accuracy(rm.detach()), self.i)
+			self.logwriter(f'Loss/fpr{i}', accuracy(rm.detach()), self.i)
 
 			ds_loss = self.gan_loss.forward_fake(rm).mean()
 			loss, log_scalar[f'ds{i}'] = tee_loss(loss, ds_loss)
 
-			self.writer.add_scalar(f'Loss/ds{i}', ds_loss, self.i)
+			self.logwriter(f'Loss/ds{i}', ds_loss, self.i)
 
 			pass
 		del rm
 		del realism_maps
 
-		self.writer.add_scalar('Loss/Discriminator_back', loss, self.i)
+		self.logwriter('Loss/Discriminator_back', loss, self.i)
 
 		loss.backward()
 
@@ -357,7 +357,7 @@ class EPEExperiment(ee.GANExperiment):
 
 			log_scalar[f'rdr{i}'] = accuracy(rm.detach()) # percentage of real predicted as real
 
-			self.writer.add_scalar(f'Loss/rpr{i}', accuracy(rm.detach()), self.i)
+			self.logwriter(f'Loss/rpr{i}', accuracy(rm.detach()), self.i)
 
 			loss += self.gan_loss.forward_real(rm).mean()
 			pass
@@ -370,7 +370,7 @@ class EPEExperiment(ee.GANExperiment):
 			self._log.debug(f'Computing penalty on real: {loss} from i:{batch_real.img.shape}.')
 			reg_loss, log_scalar['reg'] = tee_loss(0, real_penalty(loss, batch_real.img))
 
-			self.writer.add_scalar('Loss/reg', log_scalar['reg'], self.i)
+			self.logwriter('Loss/reg', log_scalar['reg'], self.i)
 
 			(self.reg_weight * reg_loss).backward()
 		else:
@@ -405,6 +405,17 @@ class EPEExperiment(ee.GANExperiment):
 		# 	pass
 		img = (new_img[0,...].clamp(min=0,max=1).permute(1,2,0).cpu().numpy() * 255.0).astype(np.uint8)
 		imageio.imwrite(str(self.dbg_dir / self.weight_save / f'{filename}{self.result_ext}'), img[:,:,:3])
+		pass
+
+	def logwriter(self, name, data, i):
+		if (i % 100) == 0:
+			self.writer.add_scalar(name, data, i)
+
+	def imagewriter(self, results, id):
+		new_img, old_img, _ = results
+
+		self.writer.summary.image('Real Image', old_img, id)
+		self.writer.summary.image('Fake Image', new_img, id)
 		pass
 	pass
 
