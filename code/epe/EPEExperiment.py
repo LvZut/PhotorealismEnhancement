@@ -147,7 +147,7 @@ class EPEExperiment(ee.GANExperiment):
 
 	
 		self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix=self.real_name)
-
+		
 		pass
 
 
@@ -233,7 +233,6 @@ class EPEExperiment(ee.GANExperiment):
 
 
 	def _run_generator(self, batch_fake, batch_real, batch_id):
-
 		rec_fake     = self.network.generator(batch_fake)
 
 		realism_maps = self.network.discriminator.forward(\
@@ -414,8 +413,8 @@ class EPEExperiment(ee.GANExperiment):
 	def imagewriter(self, results, id):
 		new_img, old_img, _ = results
 
-		self.writer.summary.image('Real Image', old_img, id)
-		self.writer.summary.image('Fake Image', new_img, id)
+		self.writer.add_image('Real Image', old_img, id)
+		self.writer.add_image('Fake Image', new_img, id)
 		pass
 	pass
 
