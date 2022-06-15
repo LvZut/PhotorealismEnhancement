@@ -10,8 +10,8 @@ if dataset == 'CARLA':
     data_folder = 'epe/dataset/CARLA/Town02/20220504115602.544453/'
     rgb_folder = 'gbuffers'
 elif dataset == 'cityscapes':
-    data_folder = 'epe/dataset/cityscapes/leftImg8bit/'
-    rgb_folder = 'train'
+    data_folder = 'epe/dataset/cityscapes/'
+    rgb_folder = 'data/'
 elif dataset== 'hddCARLA':
     data_folder = '../../data/carla/'
     rgb_folder = 'rgb'
