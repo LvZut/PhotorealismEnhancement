@@ -1,3 +1,4 @@
+from asyncore import write
 import time
 import logging
 from pathlib import Path
@@ -169,15 +170,18 @@ class GANExperiment(BaseExperiment):
 			toggle_grad(self.network.generator, False)
 			toggle_grad(self.network.discriminator, False)
 
+			write_image_once = 1
+
 			with torch.no_grad():
 				for bi, batch_fake in enumerate(loader_fake):
 					
 					gen_vars = self._forward_generator_fake(batch_fake.to(self.device))
 
 					# image to tensorboard once
-					if bi == 0:
+					if write_image_once == 1:
 						self.imagewriter(self.evaluate_test(batch_fake.to(self.device), bi), self.i)
-
+						write_image_once = 0
+						
 					del batch_fake
 					
 					self.dump_val(self.i, bi, gen_vars)
