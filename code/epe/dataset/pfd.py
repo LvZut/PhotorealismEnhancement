@@ -19,7 +19,8 @@ def center(x, m, s):
 
 
 def material_from_gt_label(gt_labelmap):
-        """ Merges several classes. """
+        """ Merges several classes.
+        Returns label mask based on gt classes. """
 
         h,w = gt_labelmap.shape
         shader_map = np.zeros((h, w, 12), dtype=np.float32)
@@ -65,6 +66,7 @@ class PfDDataset(SyntheticDataset):
 
 
                 try:
+                        # normalize gbuffers mean/std if pdf_stats.npz exists
                         data = np.load(Path(__file__).parent / 'pfd_stats.npz')
                         # self._img_mean  = data['i_m']
                         # self._img_std   = data['i_s']
@@ -123,6 +125,7 @@ class PfDDataset(SyntheticDataset):
                 #data = np.load(gbuffer_path,allow_pickle=True,fix_imports=True,encoding='latin1')
                 data = np.load(gbuffer_path)
 
+                # non-fake gbuffers contain img and gt_labels as well
                 if self.gbuffers == 'fake':
                         img       = mat2tensor(imageio.imread(img_path).astype(np.float32) / 255.0)
                         gbuffers  = mat2tensor(data['data'].astype(np.float32))
@@ -137,6 +140,7 @@ class PfDDataset(SyntheticDataset):
                         gt_labels = mat2tensor(data['shader'].astype(np.float32))
                         pass
 
+                # Convert rgb labels to class labels
                 if torch.max(gt_labels) > 128:
                         gt_labels = gt_labels / 255.0
                         pass
