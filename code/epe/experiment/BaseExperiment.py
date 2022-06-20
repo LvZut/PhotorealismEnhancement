@@ -563,7 +563,6 @@ class BaseExperiment:
                                         if self._should_save_iteration(self.i):
                                                 self._save_model(iterations=self.i)
                                                 pass
-
                                         if self.i > 0 and self.i % self.val_interval == 0:
                                                 self.validate()
                                                 pass
