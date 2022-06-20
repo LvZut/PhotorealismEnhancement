@@ -16,7 +16,7 @@ train:
   save_iterations: 20000 # save every X iterations
   name_save: c2cs_img
   shuffle_train: true
-  val_interval: 5000 # run inference on validation set every X iterations
+  val_interval: 50 # run inference on validation set every X iterations
    
 test:
   shuffle_test: false
