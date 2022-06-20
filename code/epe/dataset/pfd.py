@@ -100,8 +100,9 @@ class PfDDataset(SyntheticDataset):
         def cls2gbuf(self):
                 if self.gbuffers == 'all':
                         # all: just handle sky class differently
-                        return {\
-                                0:lambda g:g[:,15:21,:,:]}
+                        # return {\
+                        #         0:lambda g:g[:,15:21,:,:]}
+                        return {}
                 else:
                         return {}
 

@@ -48,7 +48,7 @@ vgg_losses = {\
 
 
 fake_datasets = {\
-        'hddCARLA':ds.PfDDataset,
+        'CARLA':ds.PfDDataset,
 }
 
 
