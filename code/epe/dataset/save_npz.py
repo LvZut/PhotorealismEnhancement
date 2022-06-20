@@ -27,8 +27,8 @@ def main():
     #                     'PostTonemapHDRColor', 'Specular', 'PreTonemapHDRColor', 'Metallic']
 
 
-    episode_folders = [x[0] for x in os.walk(gpath)]
-    print(f'episodes: {len(episodes_folder)}')
+    episode_folders = [ f.path for f in os.scandir(gpath) if f.is_dir() ]
+    print(f'episodes: {len(episode_folders)}')
 
 
     for i in episode_folders:
