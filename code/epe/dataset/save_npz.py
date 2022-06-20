@@ -28,8 +28,11 @@ def main():
 
 
     episode_folders = [x[0] for x in os.walk(gpath)]
-    
+    print(f'episodes: {len(episodes_folder)}')
+
+
     for i in episode_folders:
+        breakpoint()
         episode_steps = [y[0] for y in os.walk(i)]
         for j in episode_steps:
             breakpoint()
