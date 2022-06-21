@@ -10,7 +10,7 @@ from os import listdir
 from os.path import isfile, join
 
 
-from threading import Thread
+from multiprocessing import Pool
 
 def save_data(arguments):
 
@@ -72,10 +72,11 @@ def main():
     with open(f'{gpath}{path}_files.csv', 'w') as f:
         # create the csv writer
         writer = csv.writer(f)
-
+        pool = Pool()
         for index_ep, episode in tqdm(enumerate(episode_folders)):
             episode_steps = [ f.path for f in os.scandir(episode) if f.is_dir() ]
             # breakpoint()
+            arguments_list = []
             for index_step, step in enumerate(episode_steps):
                 # breakpoint()
                 # print(step)
@@ -94,12 +95,13 @@ def main():
                                 'save_paths' : (gb_path, rgb_path, gt_path),
                                 'oneD' : oneD}
 
-                    Thread(target=save_data, args=(arguments,)).start()
+                    arguments_list.append(arguments)
 
                     # don't write async as that might cause trouble
                     writer.writerow([rgb_path[6:], gt_path[6:], f'{carla_path[6:]}robust_semantic/gray/robust_{path}_{index_ep}_{index_step}_{suffix}.png', gb_path[6:]])
 
-
+            pool.map(save_data, arguments_list)
+    pool.join()
 
 if __name__ == "__main__":
     main()
