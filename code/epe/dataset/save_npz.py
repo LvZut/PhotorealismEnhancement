@@ -1,5 +1,5 @@
 import numpy as np
-import imageio
+import imageio.v2 as imageio
 from PIL import Image
 from tqdm import tqdm
 import csv
