@@ -76,9 +76,9 @@ def main():
                             arr_index += 3
 
                     # make sure data/carla/gbuffers exists
-                    gb_path = f'{carla_path}gbuffers/data_{index_ep}_{index_step}_{suffix}.npz'
-                    rgb_path = f'{carla_path}rgb/rgb_{index_ep}_{index_step}_{suffix}.png'
-                    gt_path = f'{carla_path}semantic/semantic_{index_ep}_{index_step}_{suffix}.png'
+                    gb_path = f'{carla_path}gbuffers/data_{path}_{index_ep}_{index_step}_{suffix}.npz'
+                    rgb_path = f'{carla_path}rgb/rgb_{path}_{index_ep}_{index_step}_{suffix}.png'
+                    gt_path = f'{carla_path}semantic/semantic_{path}_{index_ep}_{index_step}_{suffix}.png'
 
 
 
@@ -86,7 +86,7 @@ def main():
                     imageio.imsave(rgb_path, img)
                     imageio.imsave(gt_path, gt_labels)
 
-                    writer.writerow([rgb_path[6:], gt_path[6:], f'{carla_path[6:]}robust_semantic/gray/robust_{index_ep}_{index_step}_{suffix}.png', gb_path[6:]])
+                    writer.writerow([rgb_path[6:], gt_path[6:], f'{carla_path[6:]}robust_semantic/gray/robust_{path}_{index_ep}_{index_step}_{suffix}.png', gb_path[6:]])
 
 
 
