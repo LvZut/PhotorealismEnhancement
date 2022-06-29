@@ -16,11 +16,13 @@ elif dataset == 'cityscapes':
     data_folder = 'epe/dataset/cityscapes/'
     rgb_folder = 'data/'
 elif dataset== 'nuscenes':
-    data_folder = '../../data/nuscenes/'
+    data_folder = '../../saivvy/data/nuscenes/'
+    rgb_folder = False
 else:
     exit('dataset does not exist')
 
-onlyfiles = [f for f in listdir(data_folder+rgb_folder) if isfile(join(data_folder+rgb_folder, f))]
+if rgb_folder:
+    onlyfiles = [f for f in listdir(data_folder+rgb_folder) if isfile(join(data_folder+rgb_folder, f))]
 
 print(f'found {len(onlyfiles)} rgb files!')
 
