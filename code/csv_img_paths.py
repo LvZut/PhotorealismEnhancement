@@ -1,21 +1,22 @@
 import csv
 
+import os
 from os import listdir
 from os.path import isfile, join
 
 # dataset = 'hddCARLA'
-dataset = 'CARLA'
-town = '_Town01'
+# dataset = 'CARLA'
+dataset = 'nuscenes'
 
 if dataset == 'CARLA':
     data_folder = '../../saivvy/data/carla/'
     rgb_folder = 'rgb'
+    town = '_Town01'
 elif dataset == 'cityscapes':
     data_folder = 'epe/dataset/cityscapes/'
     rgb_folder = 'data/'
-elif dataset== 'hddCARLA':
-    data_folder = '../../data/carla/'
-    rgb_folder = 'rgb'
+elif dataset== 'nuscenes':
+    data_folder = '../../data/nuscenes/'
 else:
     exit('dataset does not exist')
 
@@ -39,7 +40,11 @@ with open(f'{dataset}_files.csv', 'a') as f:
         for rgb_file in onlyfiles:
             writer.writerow([f'{data_folder+rgb_folder}{rgb_file}', f'{data_folder}robust_semantic/gray/{rgb_file}'])
 
-    elif dataset == 'hddCARLA':
-        for file in onlyfiles:
-            number = file[10:15].lstrip('0')
-            writer.writerow([f'{data_folder}rgb/{file}', f'{data_folder}semantic/{file}', f'{data_folder}robust_semantic/gray/{file}', f'{data_folder}gbuffers/gbuffer_{number}.npz'])
+    elif dataset == 'nuscenes':
+        i = 0
+        for root, dirs, files in os.walk(data_folder):
+            for file in files:
+                if file.endswith('.jpg'):
+                    print(file)
+                    if i > 10:
+                        break
