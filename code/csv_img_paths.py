@@ -8,7 +8,7 @@ dataset = 'CARLA'
 town = '_Town01'
 
 if dataset == 'CARLA':
-    data_folder = '/hdd2/LvZut/saivvy/data/carla/'
+    data_folder = '../../saivvy/data/carla/'
     rgb_folder = 'rgb'
 elif dataset == 'cityscapes':
     data_folder = 'epe/dataset/cityscapes/'
@@ -19,8 +19,8 @@ elif dataset== 'hddCARLA':
 else:
     exit('dataset does not exist')
 
-# onlyfiles = [f for f in listdir(data_folder+rgb_folder) if isfile(join(data_folder+rgb_folder, f))]
-onlyfiles = ['rgb_Town01_3678_8_90_degrees.png']
+onlyfiles = [f for f in listdir(data_folder+rgb_folder) if isfile(join(data_folder+rgb_folder, f))]
+
 print(f'found {len(onlyfiles)} rgb files!')
 
 
