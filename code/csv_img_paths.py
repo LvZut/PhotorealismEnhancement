@@ -4,7 +4,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 
-# dataset = 'hddCARLA'
+# dataset = 'cityscapes'
 # dataset = 'CARLA'
 dataset = 'nuscenes'
 
@@ -28,7 +28,8 @@ if rgb_folder:
 
 
 # open the file in the write mode
-with open(f'{dataset}_files.csv', 'a') as f:
+# with open(f'{dataset}_files.csv', 'a') as f:
+with open(f'synth_files.csv', 'a') as f:
     # create the csv writer
     writer = csv.writer(f)
     
@@ -43,14 +44,17 @@ with open(f'{dataset}_files.csv', 'a') as f:
             writer.writerow([f'{data_folder+rgb_folder}{rgb_file}', f'{data_folder}robust_semantic/gray/{rgb_file}'])
 
     elif dataset == 'nuscenes':
-        i = []
+        i = 0
         for root, dirs, files in os.walk(data_folder):
             for file in files:
                 if file.endswith('.jpg'):
-                    # print(file)
-                    # if i > 10:
-                        # break
-                    if file in i:
-                        print('duplicate file!')
-                        exit(60)
-                    i.append(file)
+                    writer.writerow([f'{data_folder}{dirs}/{file}', f'{data_folder}robust_semantic/{file}'])
+                    i += 1
+                    if i > 10:
+                        exit(0)
+
+
+
+
+
+                    # python mseg_semantic/tool/universal_demo_batched.py --config mseg_semantic/config/test/1080/default_config_batched_ss.yaml native_img_h 900 native_img_w 1600 model_name mseg-3m model_path mseg-3m.pth input_file ../saivvy/data/nuscenes/
