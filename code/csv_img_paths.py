@@ -23,7 +23,7 @@ else:
 
 if rgb_folder:
     onlyfiles = [f for f in listdir(data_folder+rgb_folder) if isfile(join(data_folder+rgb_folder, f))]
-
+    rgb_folder += '/'
     print(f'found {len(onlyfiles)} rgb files!')
 
 
@@ -31,7 +31,7 @@ if rgb_folder:
 with open(f'{dataset}_files.csv', 'a') as f:
     # create the csv writer
     writer = csv.writer(f)
-    rgb_folder += '/'
+    
     if dataset == 'CARLA':
         suffix = 'degrees.png'
         for rgb_file_full in onlyfiles:
