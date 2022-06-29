@@ -24,7 +24,7 @@ else:
 if rgb_folder:
     onlyfiles = [f for f in listdir(data_folder+rgb_folder) if isfile(join(data_folder+rgb_folder, f))]
 
-print(f'found {len(onlyfiles)} rgb files!')
+    print(f'found {len(onlyfiles)} rgb files!')
 
 
 # open the file in the write mode
