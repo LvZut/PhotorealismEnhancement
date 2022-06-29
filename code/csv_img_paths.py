@@ -43,10 +43,14 @@ with open(f'{dataset}_files.csv', 'a') as f:
             writer.writerow([f'{data_folder+rgb_folder}{rgb_file}', f'{data_folder}robust_semantic/gray/{rgb_file}'])
 
     elif dataset == 'nuscenes':
-        i = 0
+        i = []
         for root, dirs, files in os.walk(data_folder):
             for file in files:
                 if file.endswith('.jpg'):
-                    print(file)
-                    if i > 10:
-                        break
+                    # print(file)
+                    # if i > 10:
+                        # break
+                    if file in i:
+                        print('duplicate file!')
+                        exit(60)
+                    i.append(file)
