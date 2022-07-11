@@ -6,15 +6,15 @@ from os.path import isfile, join
 
 # dataset = 'cityscapes'
 # dataset = 'CARLA'
-dataset = 'nuscenes'
+dataset = 'cityscapes'
 
 if dataset == 'CARLA':
     data_folder = '../../saivvy/data/carla/'
     rgb_folder = 'rgb'
     town = '_Town01'
 elif dataset == 'cityscapes':
-    data_folder = 'epe/dataset/cityscapes/'
-    rgb_folder = 'data/'
+    data_folder = '../../saivvy/data/cityscapes/'
+    rgb_folder = 'data'
 elif dataset== 'nuscenes':
     data_folder = '../../saivvy/data/nuscenes/'
     rgb_folder = False
@@ -44,15 +44,11 @@ with open(f'synth_files.csv', 'a') as f:
             writer.writerow([f'{data_folder+rgb_folder}{rgb_file}', f'{data_folder}robust_semantic/gray/{rgb_file}'])
 
     elif dataset == 'nuscenes':
-        i = 0
         for root, dirs, files in os.walk(data_folder):
             for file in files:
                 if file.endswith('.jpg'):
-                    writer.writerow([f'{data_folder}{dirs}/{file}', f'{data_folder}robust_semantic/{file}'])
-                    i += 1
-                    if i > 10:
-                        exit(0)
-
+                    writer.writerow([f'{root}/{file}', f'{data_folder}robust_semantic/gray/{file[:-3]}png'])
+                    
 
 
 
