@@ -5,7 +5,7 @@ name_load: c2cs_log/c2cs_log-180000
 common:
   unpin: false
   batch_size: 1
-  num_loaders: 14
+  num_loaders: 0 #14
   log_interval: 1
   seed: 1  
 

@@ -9,10 +9,10 @@ __pycache__/
 epe/dataset/CARLA/
 epe/dataset/cityscapes/
 
-data/cityscapes/
-data/hddCARLA/
+data/real/
+data/CARLA/
 data/matches/
-
+c2r/
 
 c2cs/
 

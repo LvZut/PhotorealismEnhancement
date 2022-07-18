@@ -159,7 +159,7 @@ class EPEExperiment(ee.GANExperiment):
                 if self.no_validation:
                         self.dataset_fake_val = None
                 elif self.action == 'test':
-                        self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_test_path, 4, True))
+                    self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_test_path, 4, True))
                 else:
                         self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_val_path, 4, True))
                         pass
@@ -167,7 +167,6 @@ class EPEExperiment(ee.GANExperiment):
                 # training
 
                 if self.action == 'train':
-
                         source_dataset = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
                         target_dataset = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
 
@@ -228,7 +227,7 @@ class EPEExperiment(ee.GANExperiment):
                 self._log.debug(f'  target                 : {backprop_target}')
 
                 self._log.debug('Networks are initialized.')
-                self._log.info(f'{self.network}')
+                # self._log.info(f'{self.network}')
                 pass
 
 

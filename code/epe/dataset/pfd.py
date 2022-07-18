@@ -40,17 +40,16 @@ def material_from_gt_label(gt_labelmap):
 
 
 class PfDDataset(SyntheticDataset):
-        def __init__(self, paths, transform=None, gbuffers='fake'):
+        def __init__(self, paths, transform=None, gbuffers='all'):
                 """
 
 
                 paths -- list of tuples with (img_path, robust_label_path, gbuffer_path, gt_label_path)
                 """
 
-                super(PfDDataset, self).__init__('GTA')
+                super(PfDDataset, self).__init__('CARLA')
 
                 assert gbuffers in ['all', 'img', 'no_light', 'geometry', 'fake']
-
                 self.transform = transform
                 self.gbuffers  = gbuffers
                 # self.shader    = class_type
@@ -87,13 +86,13 @@ class PfDDataset(SyntheticDataset):
         @property
         def num_gbuffer_channels(self):
                 """ Number of image channels the provided G-buffers contain."""
-                return {'fake':48, 'all':48, 'img':0, 'no_light':0, 'geometry':0}[self.gbuffers]
+                return {'fake':48, 'all':31, 'img':0, 'no_light':0, 'geometry':0}[self.gbuffers]
 
 
         @property
         def num_classes(self):
                 """ Number of classes in the semantic segmentation maps."""
-                return {'fake':12, 'all':12, 'img':0, 'no_light':0, 'geometry':0}[self.gbuffers]
+                return {'fake':12, 'all':18, 'img':0, 'no_light':0, 'geometry':0}[self.gbuffers]
 
 
         @property
