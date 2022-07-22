@@ -19,6 +19,5 @@ task.base_size=min(img1.shape[0], img1.shape[1])
 task.crop_h=img1.shape[0]
 task.crop_w=img1.shape[1]
 
-img1 = np.transpose(0,1,2)
 
 out = task.execute_on_img(image=img1)
