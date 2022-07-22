@@ -4,7 +4,7 @@ from mseg_semantic.utils import config
 import numpy as np
 import cv2
 
-robust_cfg = config.load_cfg_from_cfg_file('robust_config', 'config/robust_config/config_1080.yaml')
+robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_1080.yaml')
 
 assert isinstance(robust_cfg.model_name, str)
 assert isinstance(robust_cfg.model_path, str)
