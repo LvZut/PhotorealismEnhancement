@@ -33,3 +33,4 @@ TEST:
   save_folder: default
 
   print_freq: 10
+  num_model_classes: 194
