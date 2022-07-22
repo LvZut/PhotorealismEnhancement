@@ -13,4 +13,4 @@ InferenceTask(robust_cfg, 0, 0, 0, '', 'universal', 'universal', robust_cfg.scal
 
 img1 = cv2.imread(' ../../saivvy/data/carla/rgb/rgb_Town01_1000_3_90_degrees.png')
 
-out = InferenceTask.execute_on_img(img1)
+out = InferenceTask.execute_on_img(image=img1)
