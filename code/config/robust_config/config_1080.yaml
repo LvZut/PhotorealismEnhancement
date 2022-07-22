@@ -27,10 +27,12 @@ TEST:
   index_start: 0  # evaluation start index in list
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
-  model_path: default
-  model_name: default
+  # model_path: default
+  # model_name: default
   input_file: default
   save_folder: default
 
   print_freq: 10
   num_model_classes: 194
+  model_name: mseg-3m
+  model_path: robust_models/mseg-3m.pth
