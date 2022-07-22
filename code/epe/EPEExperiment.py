@@ -29,6 +29,9 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 
+from mseg_semantic.tool.inference_task import InferenceTask
+from mseg_semantic.utils import config
+
 logger = logging.getLogger('main')
 
 
@@ -141,8 +144,21 @@ class EPEExperiment(ee.GANExperiment):
                 self.vgg_loss   = vgg_losses[vgg_type](self.vgg).to(self.device)
                 self.vgg_weight = float(perc_cfg.get('weight', 1.0))
 
+                # lpips loss type
+                self.vgg_input = str(perc_cfg.get('vgg_input', 'rgb'))
+
+                if self.vgg_input == 'robust':
+                        robust_cfg = config.load_cfg_from_cfg_file(str(perc_cfg.get('robust_config', 'config/robust_config/config_1080.yaml')))
+
+                        assert isinstance(robust_cfg.model_name, str)
+                        assert isinstance(robust_cfg.model_path, str)
+                        
+                        InferenceTask(robust_cfg, 0, 0, 0, '', 'universal', 'universal', robust_cfg.scales)
+
+
                 reg_cfg = dict(loss_cfg.get('reg', {}))
                 self.reg_weight = float(reg_cfg.get('weight', 1.0))
+
 
 
         
@@ -246,8 +262,15 @@ class EPEExperiment(ee.GANExperiment):
                         pass
 
 
+                # use robust labels instead of rec_fake for lpips loss
+                if self.vgg_input == 'robust':
+                        # forward rec fake to get robust labels
+                        # robust_rec_fake = (run inference on rec img) 
 
-                loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
+                        # calc loss between robust and rec_robust (use other loss than lpips?)
+                        # loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
+                else:
+                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
 
                 # log generator loss
                 self.logwriter('Loss/Generator_vgg', log_info['vgg'], self.i)
