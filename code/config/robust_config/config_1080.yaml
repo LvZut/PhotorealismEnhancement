@@ -2,7 +2,7 @@ DATA:
   dataset: default
 
 TRAIN:
-  arch: resnet
+  arch: hrnet
   network_name: 
   layers: 50
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
