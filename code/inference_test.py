@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 
 # adjusted function that doesnt read/write images but uses mem instead
-def render_single_img_pred(self, image, min_resolution: int = 1080) -> None:
+def render_single_img_pred(self, image: np.ndarray, min_resolution: int = 1080) -> None:
     """Since overlaid class text is difficult to read below 1080p, we upsample predictions."""
 
     rgb_img = image
@@ -42,4 +42,4 @@ task.crop_h=img1.shape[0]
 task.crop_w=img1.shape[1]
 
 
-out = task.render_single_img_pred(img1)
+out = task.render_single_img_pred(image=img1)
