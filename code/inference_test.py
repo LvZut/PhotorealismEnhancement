@@ -21,8 +21,6 @@ def render_single_img_pred(self, image: np.ndarray, min_resolution: int = 1080) 
     overlaid_img = frame_visualizer.overlay_instances(
         label_map=pred_label_img, id_to_class_name_map=self.id_to_class_name_map
     )
-    imageio.imwrite(output_demo_fpath, overlaid_img)
-    imageio.imwrite(output_gray_fpath, pred_label_img)
 
 
 robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_1080.yaml')
@@ -31,7 +29,7 @@ assert isinstance(robust_cfg.model_name, str)
 assert isinstance(robust_cfg.model_path, str)
 
 task = InferenceTask(robust_cfg, 0, 0, 0, '', 'universal', 'universal', robust_cfg.scales)
-task.render_single_img_pred = render_single_img_pred()
+task.render_single_img_pred = render_single_img_pred
 
 img1 = cv2.imread('../../saivvy/data/carla/rgb/rgb_Town01_1000_3_90_degrees.png', cv2.IMREAD_COLOR)
 img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
