@@ -40,6 +40,7 @@ class mseg_task():
         image = np.transpose(image[0], (1,2,0))
         # need first image to do some initializing
         if not hasattr(self, 'self.robust_cfg.base_size'):
+            print('hopefully only once!!!!!!!!\n\n\n\n')
             self.robust_cfg.base_size = determine_max_possible_base_size(h=image.shape[0], w=image.shape[1], crop_sz=min(self.robust_cfg.test_h, self.robust_cfg.test_w))
             # print(f'created base size: {self.robust_cfg.base_size}')
 
