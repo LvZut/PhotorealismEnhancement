@@ -3,7 +3,7 @@ from mseg_semantic.utils import config
 
 import numpy as np
 import cv2
-
+import math
 
 def determine_max_possible_base_size(h: int, w: int, crop_sz: int) -> int:
     """Given a crop size and original image dims for aspect ratio, determine
