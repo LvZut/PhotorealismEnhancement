@@ -273,7 +273,7 @@ class EPEExperiment(ee.GANExperiment):
                         # calc loss between robust and rec_robust (use other loss than lpips?)
                         print(f'robust labels shape: {batch_fake.robust_labels.shape}, robust rec fake shape: {robust_rec_fake.shape}')
 
-                        robust_rec_fake = torch.from_numpy(robust_rec_fake[0])
+                        robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
                 else:
