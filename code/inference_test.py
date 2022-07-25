@@ -56,7 +56,9 @@ print(img1.shape)
 mean, std = normalization_utils.get_imagenet_mean_std()
 crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
 
-img1 = crop_transform(img1, np.zeros_like(img1)[:,:,0])
+labels=np.zeros_like(img1)[:,:,0]
+breakpoint()
+img1 = crop_transform(img1, labels)
 
 img1 = np.transpose(img1, (2,0,1))
 img1 = torch.from_numpy(np.expand_dims(img1, axis=0))
