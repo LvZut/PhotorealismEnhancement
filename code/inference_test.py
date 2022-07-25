@@ -56,7 +56,7 @@ print(img1.shape)
 mean, std = normalization_utils.get_imagenet_mean_std()
 crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
 
-labels=np.expand_dims(np.zeros_like(img1)[:,:,0], axis=2)
+labels=np.ones_like(img1)
 breakpoint()
 img1 = crop_transform(img1, labels)
 
