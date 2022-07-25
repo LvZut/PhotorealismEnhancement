@@ -45,8 +45,8 @@ robust_cfg.base_size = determine_max_possible_base_size(h=img1.shape[0], w=img1.
 mean, std = normalization_utils.get_imagenet_mean_std()
 crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
 
-robust_cfg.native_h=img1.shape[0]
-robust_cfg.native_w=img1.shape[1]
+robust_cfg.native_img_h=img1.shape[0]
+robust_cfg.native_img_w=img1.shape[1]
 
 img1, _ = crop_transform(img1, img1[:, :, 0])
 
