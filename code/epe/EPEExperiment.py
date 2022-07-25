@@ -29,7 +29,7 @@ torch.backends.cudnn.benchmark = True
 
 from torch.utils.tensorboard import SummaryWriter
 
-from mseg_semantic.tool.inference_task import InferenceTask
+from epe.mseg_inference import mseg_task
 from mseg_semantic.utils import config
 
 logger = logging.getLogger('main')
@@ -149,11 +149,7 @@ class EPEExperiment(ee.GANExperiment):
 
                 if self.vgg_input == 'robust':
                         robust_cfg = config.load_cfg_from_cfg_file(str(perc_cfg.get('robust_config', 'config/robust_config/config_1080.yaml')))
-
-                        assert isinstance(robust_cfg.model_name, str)
-                        assert isinstance(robust_cfg.model_path, str)
-                        
-                        InferenceTask(robust_cfg, 0, 0, 0, '', 'universal', 'universal', robust_cfg.scales)
+                        self.mseg_inference = mseg_task(robust_cfg)
 
 
                 reg_cfg = dict(loss_cfg.get('reg', {}))
@@ -263,12 +259,12 @@ class EPEExperiment(ee.GANExperiment):
 
 
                 # use robust labels instead of rec_fake for lpips loss
-                # if self.vgg_input == 'robust':
+                if self.vgg_input == 'robust':
                         # forward rec fake to get robust labels
-                        # robust_rec_fake = (run inference on rec img) 
+                        robust_rec_fake = self.mseg_inference.inference(rec_fake)
 
                         # calc loss between robust and rec_robust (use other loss than lpips?)
-                        # loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
+                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
                 # else:
                 loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
 
