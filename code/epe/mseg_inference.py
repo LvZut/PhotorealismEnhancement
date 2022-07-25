@@ -60,3 +60,5 @@ class mseg_task():
 
         self.task.model.eval()
         out = self.task.execute_on_batch(batch=image)
+
+        return out
