@@ -64,5 +64,5 @@ task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h,
 
 # labels=np.ones_like(img1)
 
-breakpoint()
+task.model.eval()
 out = task.execute_on_batch(batch=img1)
