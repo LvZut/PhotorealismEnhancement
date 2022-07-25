@@ -44,5 +44,6 @@ task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h,
 # task.crop_h=img1.shape[0]
 # task.crop_w=img1.shape[1]
 
-
+img1 = np.expand_dims(np.transpose(img1, (2,0,1)), axis=0)
+print(img1.shape)
 out = task.execute_on_batch(batch=img1)
