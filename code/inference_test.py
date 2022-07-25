@@ -48,9 +48,8 @@ crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size),
 robust_cfg.native_h=img1.shape[0]
 robust_cfg.native_w=img1.shape[1]
 
-img1 = crop_transform(img1, img1[:, :, 0])
+img1, _ = crop_transform(img1, img1[:, :, 0])
 
-breakpoint()
 img1 = np.transpose(img1, (2,0,1))
 img1 = torch.from_numpy(np.expand_dims(img1, axis=0))
 
