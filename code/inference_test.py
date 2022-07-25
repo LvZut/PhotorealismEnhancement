@@ -52,7 +52,6 @@ task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h,
 
 img1 = np.expand_dims(np.transpose(img1, (2,0,1)), axis=0)
 print(img1.shape)
-img1 = torch.from_numpy(img1)
 
 # same transform as mseg dataloader
 mean, std = normalization_utils.get_imagenet_mean_std()
@@ -60,5 +59,6 @@ crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size),
 
 img1 = crop_transform(img1, torch.zeros_like(img1))
 
+img1 = torch.from_numpy(img1)
 breakpoint()
 out = task.execute_on_batch(batch=img1)
