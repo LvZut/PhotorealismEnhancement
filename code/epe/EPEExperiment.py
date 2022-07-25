@@ -263,12 +263,15 @@ class EPEExperiment(ee.GANExperiment):
                         # forward rec fake to get robust labels
 
                         mseg_input = rec_fake.detach().cpu().numpy().copy()
+                        np.save(f'mseg_input_{batch_id}', mseg_input)
                         robust_rec_fake = self.mseg_inference.inference(mseg_input)
-
+                        print('Inference on rec_fake complete!')
+                        torch.save(f'mseg_output_{batch_id}.pt', robust_rec_fake)
                         # calc loss between robust and rec_robust (use other loss than lpips?)
+                        print(f'robust labels shape: {batch_fake.robust_labels.shape}, robust rec fake shape: {robust_rec_fake.shape}')
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
-                # else:
-                loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
+                else:
+                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
 
                 # log generator loss
                 self.logwriter('Loss/Generator_vgg', log_info['vgg'], self.i)
