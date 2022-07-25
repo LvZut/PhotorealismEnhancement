@@ -34,9 +34,10 @@ class mseg_task():
         # image = cv2.imread('../../saivvy/data/carla/rgb/rgb_Town01_1000_3_90_degrees.png', cv2.IMREAD_COLOR)
         # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         # image = np.float32(image)
-
+        
+        # with torch.no_grad():
         print('image_shape:', image.shape)
-
+        image = np.transpose(image[0], (1,2,0))
         # need first image to do some initializing
         if not hasattr(self, 'self.robust_cfg.base_size'):
             self.robust_cfg.base_size = determine_max_possible_base_size(h=image.shape[0], w=image.shape[1], crop_sz=min(self.robust_cfg.test_h, self.robust_cfg.test_w))

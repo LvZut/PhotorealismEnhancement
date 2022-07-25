@@ -261,7 +261,9 @@ class EPEExperiment(ee.GANExperiment):
                 # use robust labels instead of rec_fake for lpips loss
                 if self.vgg_input == 'robust':
                         # forward rec fake to get robust labels
-                        robust_rec_fake = self.mseg_inference.inference(rec_fake)
+
+                        mseg_input = rec_fake.detach().cpu().numpy().copy()
+                        robust_rec_fake = self.mseg_inference.inference(mseg_input)
 
                         # calc loss between robust and rec_robust (use other loss than lpips?)
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
