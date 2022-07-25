@@ -263,15 +263,15 @@ class EPEExperiment(ee.GANExperiment):
                         # forward rec fake to get robust labels
 
                         mseg_input = rec_fake.detach().cpu().numpy().copy()
-                        print('image_shape:', mseg_input.shape)
+                        # print('image_shape:', mseg_input.shape)
 
                         # output is BCHW
                         robust_rec_fake = self.mseg_inference.inference(mseg_input)
                         # np.save(f'mseg_input_{batch_id}', mseg_input)
-                        print('Inference on rec_fake complete!', type(robust_rec_fake), robust_rec_fake.shape)
+                        # print('Inference on rec_fake complete!', type(robust_rec_fake), robust_rec_fake.shape)
                         # torch.save(f'mseg_output_{batch_id}.pt', robust_rec_fake)
                         # calc loss between robust and rec_robust (use other loss than lpips?)
-                        print(f'robust labels shape: {batch_fake.robust_labels.shape}, robust rec fake shape: {robust_rec_fake.shape}')
+                        # print(f'robust labels shape: {batch_fake.robust_labels.shape}, robust rec fake shape: {robust_rec_fake.shape}')
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 

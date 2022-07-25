@@ -36,12 +36,12 @@ class mseg_task():
         # image = np.float32(image)
         
         # with torch.no_grad():
-        print('image_shape:', image.shape)
+        # print('image_shape:', image.shape)
         image = np.transpose(image[0], (1,2,0))
         # need first image to do some initializing
         if not hasattr(self, 'self.robust_cfg.base_size'):
             self.robust_cfg.base_size = determine_max_possible_base_size(h=image.shape[0], w=image.shape[1], crop_sz=min(self.robust_cfg.test_h, self.robust_cfg.test_w))
-            print(f'created base size: {self.robust_cfg.base_size}')
+            # print(f'created base size: {self.robust_cfg.base_size}')
 
             # same transform as mseg dataloader
             mean, std = normalization_utils.get_imagenet_mean_std()
