@@ -36,31 +36,32 @@ img1 = cv2.imread('../../saivvy/data/carla/rgb/rgb_Town01_1000_3_90_degrees.png'
 img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
 img1 = np.float32(img1)
 
+print('image_shape:', img1.shape)
+# same transform as mseg dataloader
+mean, std = normalization_utils.get_imagenet_mean_std()
+crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
+
+img1 = crop_transform(img1, img1[:, :, 0])
+
 robust_cfg.native_h=img1.shape[0]
 robust_cfg.native_w=img1.shape[1]
 
-print(img1.shape)
+
 robust_cfg.base_size = determine_max_possible_base_size(
         h=img1.shape[0], w=img1.shape[1], crop_sz=min(robust_cfg.test_h, robust_cfg.test_w))
 
 task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h, robust_cfg.test_w, '', 'universal', 'universal', robust_cfg.scales)
 
 
+img1 = np.transpose(img1, (2,0,1))
+img1 = torch.from_numpy(np.expand_dims(img1, axis=0))
 # task.base_size=1280
 # task.crop_h=img1.shape[0]
 # task.crop_w=img1.shape[1]
 
-print(img1.shape)
 
-# same transform as mseg dataloader
-mean, std = normalization_utils.get_imagenet_mean_std()
-crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
 
-labels=np.ones_like(img1)
-breakpoint()
-img1 = crop_transform(img1, img1[:, :, 0])
+# labels=np.ones_like(img1)
 
-img1 = np.transpose(img1, (2,0,1))
-img1 = torch.from_numpy(np.expand_dims(img1, axis=0))
 breakpoint()
 out = task.execute_on_batch(batch=img1)
