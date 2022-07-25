@@ -37,10 +37,13 @@ img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
 img1 = np.float32(img1)
 
 print('image_shape:', img1.shape)
+
+
+robust_cfg.base_size = determine_max_possible_base_size(h=img1.shape[0], w=img1.shape[1], crop_sz=min(robust_cfg.test_h, robust_cfg.test_w))
+
 # same transform as mseg dataloader
 mean, std = normalization_utils.get_imagenet_mean_std()
 crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
-
 
 robust_cfg.native_h=img1.shape[0]
 robust_cfg.native_w=img1.shape[1]
@@ -49,8 +52,6 @@ img1 = crop_transform(img1, img1[:, :, 0])
 
 
 
-robust_cfg.base_size = determine_max_possible_base_size(
-        h=img1.shape[0], w=img1.shape[1], crop_sz=min(robust_cfg.test_h, robust_cfg.test_w))
 
 task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h, robust_cfg.test_w, '', 'universal', 'universal', robust_cfg.scales)
 
