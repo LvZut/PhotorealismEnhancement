@@ -6,6 +6,11 @@ import torch
 import cv2
 import math
 
+# for dataloader
+from mseg_semantic.utils import transform
+import mseg_semantic.utils.normalization_utils as normalization_utils
+
+
 def determine_max_possible_base_size(h: int, w: int, crop_sz: int) -> int:
     """Given a crop size and original image dims for aspect ratio, determine
     the max base_size that will fit within the crop.
@@ -48,5 +53,12 @@ task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h,
 img1 = np.expand_dims(np.transpose(img1, (2,0,1)), axis=0)
 print(img1.shape)
 img1 = torch.from_numpy(img1)
+
+# same transform as mseg dataloader
+mean, std = normalization_utils.get_imagenet_mean_std()
+crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
+
+img1 = crop_transform(img1, torch.zeros_like(img1))
+
 breakpoint()
 out = task.execute_on_batch(batch=img1)
