@@ -50,14 +50,14 @@ robust_cfg.native_w=img1.shape[1]
 
 img1 = crop_transform(img1, img1[:, :, 0])
 
-
+breakpoint()
+img1 = np.transpose(img1, (2,0,1))
+img1 = torch.from_numpy(np.expand_dims(img1, axis=0))
 
 
 task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h, robust_cfg.test_w, '', 'universal', 'universal', robust_cfg.scales)
 
 
-img1 = np.transpose(img1, (2,0,1))
-img1 = torch.from_numpy(np.expand_dims(img1, axis=0))
 # task.base_size=1280
 # task.crop_h=img1.shape[0]
 # task.crop_w=img1.shape[1]
