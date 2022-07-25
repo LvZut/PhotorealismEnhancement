@@ -1,4 +1,4 @@
-from mseg_semantic.tool.batched_inference_task import InferenceTask
+from mseg_semantic.tool.batched_inference_task import BatchedInferenceTask
 from mseg_semantic.utils import config
 
 import numpy as np
@@ -30,11 +30,14 @@ img1 = cv2.imread('../../saivvy/data/carla/rgb/rgb_Town01_1000_3_90_degrees.png'
 img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
 img1 = np.float32(img1)
 
+robust_cfg.native_h=img1.shape[0]
+robust_cfg.native_w=img1.shape[1]
+
 print(img1.shape)
 robust_cfg.base_size = determine_max_possible_base_size(
         h=img1.shape[0], w=img1.shape[1], crop_sz=min(robust_cfg.test_h, robust_cfg.test_w))
 
-task = InferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h, robust_cfg.test_w, '', 'universal', 'universal', robust_cfg.scales)
+task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h, robust_cfg.test_w, '', 'universal', 'universal', robust_cfg.scales)
 
 
 # task.base_size=1280
@@ -42,4 +45,4 @@ task = InferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h, robust
 # task.crop_w=img1.shape[1]
 
 
-out = task.execute_on_img(image=img1)
+out = task.execute_on_batch(batch=img1)
