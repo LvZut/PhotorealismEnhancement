@@ -28,7 +28,7 @@ def determine_max_possible_base_size(h: int, w: int, crop_sz: int) -> int:
 class mseg_task():
     def __init__(self, cfg):
         self.robust_cfg = cfg
-        
+        self.robust_cfg.base_size = None
 
     def inference(self, image):
         # image = cv2.imread('../../saivvy/data/carla/rgb/rgb_Town01_1000_3_90_degrees.png', cv2.IMREAD_COLOR)
@@ -39,7 +39,7 @@ class mseg_task():
         # print('image_shape:', image.shape)
         image = np.transpose(image[0], (1,2,0))
         # need first image to do some initializing
-        if not hasattr(self, 'self.robust_cfg.base_size'):
+        if self.robust_cfg.base_size is None:
             print('hopefully only once!!!!!!!!\n\n\n\n')
             self.robust_cfg.base_size = determine_max_possible_base_size(h=image.shape[0], w=image.shape[1], crop_sz=min(self.robust_cfg.test_h, self.robust_cfg.test_w))
             # print(f'created base size: {self.robust_cfg.base_size}')
