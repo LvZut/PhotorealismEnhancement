@@ -57,7 +57,7 @@ print(img1.shape)
 mean, std = normalization_utils.get_imagenet_mean_std()
 crop_transform = transform.Compose([transform.ResizeShort(robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
 
-img1 = crop_transform(img1, torch.zeros_like(img1))
+img1 = crop_transform(img1, np.zeros_like(img1))
 
 img1 = torch.from_numpy(img1)
 breakpoint()
