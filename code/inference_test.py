@@ -47,5 +47,5 @@ task = BatchedInferenceTask(robust_cfg, robust_cfg.base_size, robust_cfg.test_h,
 
 img1 = np.expand_dims(np.transpose(img1, (2,0,1)), axis=0)
 print(img1.shape)
-img1 = torch.from_numpy(a)
+img1 = torch.from_numpy(img1)
 out = task.execute_on_batch(batch=img1)
