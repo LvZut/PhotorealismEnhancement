@@ -45,16 +45,19 @@ class mseg_task():
             # print(f'created base size: {self.robust_cfg.base_size}')
 
             # same transform as mseg dataloader
-            mean, std = normalization_utils.get_imagenet_mean_std()
-            crop_transform = transform.Compose([transform.ResizeShort(self.robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=mean, std=std)])
+            self.mean, self.std = normalization_utils.get_imagenet_mean_std()
+            self.crop_transform = transform.Compose([transform.ResizeShort(self.robust_cfg.base_size), transform.ToTensor(), transform.Normalize(mean=self.mean, std=self.std)])
 
             self.robust_cfg.native_img_h=image.shape[0]
             self.robust_cfg.native_img_w=image.shape[1]
 
             self.task = BatchedInferenceTask(self.robust_cfg, self.robust_cfg.base_size, self.robust_cfg.test_h, self.robust_cfg.test_w, '', 'universal', 'universal', self.robust_cfg.scales)
 
+        self.robust_cfg.native_img_h=image.shape[0]
+        self.robust_cfg.native_img_w=image.shape[1]
+
         # apply transform to image
-        image, _ = crop_transform(image, image[:, :, 0])
+        image, _ = self.crop_transform(image, image[:, :, 0])
         image = torch.from_numpy(np.expand_dims(image, axis=0))
 
         
