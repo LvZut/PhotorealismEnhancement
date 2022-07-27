@@ -276,11 +276,15 @@ class EPEExperiment(ee.GANExperiment):
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
+                        if (self.i == 80000) or (self.i == 80001):
+                                print('datatypes xjika', batch_fake.type(), robust_rec_fake.type())
+
                         # try MSE instead of other vgg_loss?
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
 
                         # debug inputs once
                         if (self.i == 80000) or (self.i == 80001):
+                                print(batch_fake.type(), robust_rec_fake.type())
                                 torch.save(batch_fake.robust_labels, f'robust_{self.i}.pt')
                                 torch.save(robust_rec_fake, f'rec_{self.i}.pt')
 
