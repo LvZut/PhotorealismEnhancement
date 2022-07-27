@@ -47,6 +47,7 @@ vgg_losses = {\
         'lpips_vgg':     lambda vgg: nw.LPIPSLoss(net='vgg'),
         'munit':         lambda vgg: nw.VGGLoss(vgg, 'munit'),
         'johnson':       lambda vgg: nw.VGGLoss(vgg, 'johnson'),
+        'MSE' :          lambda vgg: nw.MSELoss()
 }
 
 
@@ -275,6 +276,7 @@ class EPEExperiment(ee.GANExperiment):
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
+                        # try MSE instead of other vgg_loss?
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
                 else:
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])
@@ -436,7 +438,8 @@ class EPEExperiment(ee.GANExperiment):
                 pass
 
         def logwriter(self, name, data, i):
-                if (i % 100) == 0:
+                # 0 for discriminator steps, 1 for generator steps
+                if (i % 100) == 0 or (i % 100) == 1:
                         self.writer.add_scalar(name, data, i)
 
         def imagewriter(self, results, id):

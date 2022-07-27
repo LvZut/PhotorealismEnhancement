@@ -54,3 +54,13 @@ class VGGLoss(nn.Module):
 	
 	def forward_fake(self, img, rec):
 		return self.loss_func(self.vgg, img, rec)
+
+
+
+class MSELoss(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.MSE = nn.MSELoss()
+
+	def forward_fake(self, img, rec):
+		return self.MSE(img, rec)
