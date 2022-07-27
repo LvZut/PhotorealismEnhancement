@@ -65,4 +65,4 @@ class MSELoss(nn.Module):
 	def forward_fake(self, img, rec):
 
 		
-		return self.MSE(img.double(), torch.squeeze(rec.double()))
+		return [self.MSE(img.double(), torch.squeeze(rec.double()))]
