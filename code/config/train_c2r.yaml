@@ -1,6 +1,6 @@
 ---
-weight_dir: c2r/c2r_4 # path to folder where checkpoints should be stored
-name_load: c2r_4-100000
+weight_dir: c2r/c2r_MSE # path to folder where checkpoints should be stored
+name_load: c2r_MSE-80000
 
 common:
   unpin: false # disable pinning for the loader
@@ -13,8 +13,8 @@ train:
   max_epochs: -1
   max_iterations: 1000000
   save_epochs: -1 # save every X epochs
-  save_iterations: 20000 # save every X iterations
-  name_save: c2r_4
+  save_iterations: 10000 # save every X iterations
+  name_save: c2r_MSE
   shuffle_train: true
   val_interval: 5000 # run inference on validation set every X iterations
    
@@ -78,7 +78,7 @@ objectives:
   gan: ls
   perceptual:
     vgg_input: robust # rgb
-    type: 'lpips_vgg'
+    type: 'MSE' #'lpips_vgg'
     weight: 0.5
   reg:
     weight: 0.03
