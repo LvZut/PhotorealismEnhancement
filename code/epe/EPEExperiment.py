@@ -145,6 +145,8 @@ class EPEExperiment(ee.GANExperiment):
                 self.vgg_loss   = vgg_losses[vgg_type](self.vgg).to(self.device)
                 self.vgg_weight = float(perc_cfg.get('weight', 1.0))
 
+                self.vgg_decay = float(perc_cfg.get('vgg_decay', 1.0))
+
                 # lpips loss type
                 self.vgg_input = str(perc_cfg.get('vgg_input', 'rgb'))
 
@@ -258,6 +260,9 @@ class EPEExperiment(ee.GANExperiment):
                         self.logwriter(f'Loss/gs{i}', log_info[f'gs{i}'], self.i)
                         pass
 
+                # decay weight first 100k steps every 10k steps
+                if (self.i < 100002) and ((self.i % 10000 == 0) or (self.i % 10001 == 0)):
+                        self.vgg_weight = self.vgg_weight * self.vgg_decay
 
                 # use robust labels instead of rec_fake for lpips loss
                 if self.vgg_input == 'robust':
@@ -276,8 +281,6 @@ class EPEExperiment(ee.GANExperiment):
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
-                        if (self.i == 80000) or (self.i == 80001):
-                                print('datatypes xjika', batch_fake.type(), robust_rec_fake.type())
 
                         # try MSE instead of other vgg_loss?
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
