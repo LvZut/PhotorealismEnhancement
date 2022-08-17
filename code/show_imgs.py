@@ -2,6 +2,11 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 
+from epe.mseg_inference import mseg_task
+from mseg_semantic.utils import config
+
+robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_1080.yaml')
+mseg_inference = mseg_task(robust_cfg)
 
 steps = list(range(1001, 1099, 2))
 
@@ -12,18 +17,24 @@ for step in steps:
     inp = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
     outp = torch.load(f'gen_out/output_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
 
+    mseg_input = inp.numpy().copy()
+    inp_robust = torch.from_numpy(mseg_inference.inference(mseg_input)[0])
+
     # print(rec.shape, robust.shape)
-    plt.subplot(2, 2, 1)
+    plt.subplot(2, 3, 1)
     plt.imshow(  rec  )
 
-    plt.subplot(2, 2, 2)
+    plt.subplot(2, 3, 2)
     plt.imshow(  robust[0,0,:,:]  )
 
-    plt.subplot(2, 2, 3)
+    plt.subplot(2, 3, 3)
     plt.imshow(  np.transpose(inp[0], (1,2,0))  )
 
-    plt.subplot(2, 2, 4)
+    plt.subplot(2, 3, 4)
     plt.imshow(  np.transpose(outp[0], (1,2,0))  )
+
+    plt.subplot(2, 3, 5)
+    plt.imshow(  inp_robust  )
     plt.show()
 
     print(torch.unique(rec), torch.unique(robust))
