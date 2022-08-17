@@ -10,37 +10,36 @@ mseg_inference = mseg_task(robust_cfg)
 
 # import imageio
 # img = imageio.imread('../../saivvy/data/carla/rgb/rgb_Town01_1111_0_180_degrees.png')
-inp = torch.load(f'gen_out/input_1001.pt', map_location=torch.device('cpu')).detach().numpy()
-inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
-plt.imshow(inp_robust)
-plt.savefig('robust_out.png')
-# steps = list(range(1001, 1099, 2))
+# inp = torch.load(f'gen_out/input_1001.pt', map_location=torch.device('cpu')).detach().numpy()
+# inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
+# plt.imshow(inp_robust)
+# plt.savefig('robust_out.png')
+steps = list(range(1001, 1099, 2))
 
 
-# for step in steps:
-#     rec = torch.load(f'gen_out/rec_{step}.pt', map_location=torch.device('cpu'))
-#     robust = torch.load(f'gen_out/robust_{step}.pt', map_location=torch.device('cpu'))
-#     inp = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
-#     outp = torch.load(f'gen_out/output_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
+for step in steps:
+    rec = torch.load(f'gen_out/rec_{step}.pt', map_location=torch.device('cpu'))
+    robust = torch.load(f'gen_out/robust_{step}.pt', map_location=torch.device('cpu'))
+    inp = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
+    outp = torch.load(f'gen_out/output_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
 
-#     inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
+    inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
 
-#     # print(rec.shape, robust.shape)
-#     plt.subplot(2, 3, 1)
-#     plt.imshow(  rec  )
-
-#     plt.subplot(2, 3, 2)
-#     plt.imshow(  robust[0,0,:,:]  )
-
-#     plt.subplot(2, 3, 3)
-#     plt.imshow(  np.transpose(inp[0], (1,2,0))  )
-
-#     plt.subplot(2, 3, 4)
-#     plt.imshow(  np.transpose(outp[0], (1,2,0))  )
-
-#     plt.subplot(2, 3, 5)
-#     plt.imshow(  inp_robust  )
-#     plt.savefig(f'gen_out/results_{step}.png')
- 
-
-#     print(torch.unique(rec), torch.unique(robust))
+    # input
+    plt.subplot(2, 3, 1)
+    plt.imshow(  np.transpose(inp[0], (1,2,0))  )
+    # output
+    plt.subplot(2, 3, 2)
+    plt.imshow(  np.transpose(outp[0], (1,2,0))  )
+    # rec
+    plt.subplot(2, 3, 3)
+    plt.imshow(  rec  )
+    # inp_robust
+    plt.subplot(2, 3, 4)
+    plt.imshow(  inp_robust  )
+    plt.savefig(f'gen_out/results_{step}.png')
+    # outp_robust
+    plt.subplot(2, 3, 5)
+    plt.imshow(  robust[0,0,:,:]  )
+    
+    print(step)
