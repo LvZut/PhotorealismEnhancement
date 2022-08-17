@@ -36,15 +36,15 @@ for step in steps:
     # rec
     plt.subplot(2, 3, 3)
     plt.imshow(  rec_robust  )
-    plt.suptitle('rec')
+    plt.suptitle('output_robust')
     # inp_robust
     plt.subplot(2, 3, 4)
     plt.imshow(  inp_robust  )
     plt.savefig(f'gen_out/results_{step}.png')
-    plt.suptitle('inp robust')
+    plt.suptitle('input robust')
     # outp_robust
     plt.subplot(2, 3, 5)
     plt.imshow(  inp_labels[0,0,:,:]  )
-    plt.suptitle('out robust')
+    plt.suptitle('input labels')
     
     print(step)
