@@ -10,7 +10,7 @@ mseg_inference = mseg_task(robust_cfg)
 
 import imageio
 img = imageio.imread('../../saivvy/data/carla/rgb/rgb_Town01_1111_0_180_degrees.png')
-robust = mseg_inference(img)
+robust = mseg_inference.inference(img)
 breakpoint()
 
 # steps = list(range(1001, 1099, 2))
