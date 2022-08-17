@@ -23,7 +23,7 @@ for step in steps:
     img = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
     rec = torch.load(f'gen_out/output_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
 
-    inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
+    inp_robust = torch.from_numpy(mseg_inference.inference(img.copy())[0])
 
     # input
     plt.subplot(2, 3, 1)
@@ -47,4 +47,4 @@ for step in steps:
     plt.imshow(  inp_labels[0,0,:,:]  )
     plt.suptitle('input labels')
     
-    print(step)
+    print(step, np.max(inp_labels[0,0,:,:]))
