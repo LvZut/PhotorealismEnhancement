@@ -8,13 +8,12 @@ from mseg_semantic.utils import config
 robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_1080.yaml')
 mseg_inference = mseg_task(robust_cfg)
 
-import imageio
-img = imageio.imread('../../saivvy/data/carla/rgb/rgb_Town01_1111_0_180_degrees.png')
+# import imageio
+# img = imageio.imread('../../saivvy/data/carla/rgb/rgb_Town01_1111_0_180_degrees.png')
 inp = torch.load(f'gen_out/input_1001.pt', map_location=torch.device('cpu')).detach().numpy()
-breakpoint()
-robust = mseg_inference.inference(img)
-breakpoint()
-
+inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
+plt.imshow(inp_robust)
+plt.savefig('robust_out.png')
 # steps = list(range(1001, 1099, 2))
 
 
