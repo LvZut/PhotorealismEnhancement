@@ -10,7 +10,7 @@ mseg_inference = mseg_task(robust_cfg)
 
 import imageio
 img = imageio.imread('../../saivvy/data/carla/rgb/rgb_Town01_1111_0_180_degrees.png')
-inp = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
+inp = torch.load(f'gen_out/input_1001.pt', map_location=torch.device('cpu')).detach().numpy()
 breakpoint()
 robust = mseg_inference.inference(img)
 breakpoint()
