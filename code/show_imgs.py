@@ -35,6 +35,7 @@ for step in steps:
 
     plt.subplot(2, 3, 5)
     plt.imshow(  inp_robust  )
-    plt.show()
+    plt.savefig('results.png')
+ 
 
     print(torch.unique(rec), torch.unique(robust))
