@@ -8,8 +8,9 @@ from mseg_semantic.utils import config
 robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_1080.yaml')
 mseg_inference = mseg_task(robust_cfg)
 
+import imageio
 rgb_path = ' ../../saivvy/data/carla/rgb/rgb_Town01_1111_0_180_degrees.png'
-img = np.load(rgb_path)
+img = imageio.imread(rgb_path)
 robust = mseg_inference(img)
 breakpoint()
 
