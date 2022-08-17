@@ -16,8 +16,8 @@ TEST:
   split: split  # split in [train, val and test]
   small: True
   base_size: 1080
-  test_h: 196
-  test_w: 196
+  test_h: 200
+  test_w: 200
   scales: [1.0]  # evaluation scales, ms as [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 
   native_img_h: -1
