@@ -217,7 +217,7 @@ class GANExperiment(BaseExperiment):
 
                 with torch.no_grad():
                         for bi, batch_fake in enumerate(self.loader_fake):                
-                                print(f'batch {bi}, size {batch_fake.size()}')
+                                print(f'batch {bi}, size {batch_fake.img.size()}')
                                 self.save_result(self.evaluate_test(batch_fake.to(self.device), bi), bi)
                                 pass
                         pass
