@@ -34,7 +34,7 @@ for step in steps:
 
     plt.subplot(2, 3, 5)
     plt.imshow(  inp_robust  )
-    plt.savefig('results.png')
+    plt.savefig(f'gen_out/results_{step}.png')
  
 
     print(torch.unique(rec), torch.unique(robust))
