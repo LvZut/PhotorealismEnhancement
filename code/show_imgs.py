@@ -47,4 +47,4 @@ for step in steps:
     plt.imshow(  inp_labels[0,0,:,:]  )
     plt.suptitle('input labels')
     
-    print(step, np.max(inp_labels[0,0,:,:]))
+    print(step)
