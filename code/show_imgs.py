@@ -5,7 +5,7 @@ import numpy as np
 from epe.mseg_inference import mseg_task
 from mseg_semantic.utils import config
 
-robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_1080.yaml')
+robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_480.yaml')
 mseg_inference = mseg_task(robust_cfg)
 
 # import imageio
