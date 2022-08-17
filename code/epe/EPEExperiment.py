@@ -283,13 +283,18 @@ class EPEExperiment(ee.GANExperiment):
 
 
                         # try MSE instead of other vgg_loss?
-                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels, robust_rec_fake)[0])
+                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels[0,0,:,:], robust_rec_fake)[0])
 
                         # debug inputs once
-                        if (self.i == 80000) or (self.i == 80001):
-                                print(batch_fake.type(), robust_rec_fake.type())
-                                torch.save(batch_fake.robust_labels, f'robust_{self.i}.pt')
-                                torch.save(robust_rec_fake, f'rec_{self.i}.pt')
+                        if (self.i > 1000) and (self.i < 1100):
+                                #print(batch_fake.type(), robust_rec_fake.type())
+                                try:
+                                    torch.save(batch_fake.robust_labels, f'gen_out/robust_{self.i}.pt')
+                                    torch.save(robust_rec_fake, f'gen_out/rec_{self.i}.pt')
+                                    torch.save(batch_fake.img, f'gen_out/input_{self.i}.pt')
+                                    torch.save(rec_fake, f'gen_out/output_{self.i}.pt')
+                                except:
+                                    self.logwriter('Failed to log info')
 
                 else:
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.img, rec_fake)[0])

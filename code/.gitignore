@@ -13,6 +13,7 @@ data/real/
 data/CARLA/
 data/matches/
 c2r/
+gen_out/
 
 c2cs/
 
