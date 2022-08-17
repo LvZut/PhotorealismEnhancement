@@ -34,5 +34,5 @@ TEST:
 
   print_freq: 10
   num_model_classes: 194
-  model_name: mseg-3m
-  model_path: robust_models/mseg-3m.pth
+  model_name: mseg-3m-480p
+  model_path: robust_models/mseg-3m-480p.pth
