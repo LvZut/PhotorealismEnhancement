@@ -28,23 +28,23 @@ for step in steps:
     # input
     plt.subplot(2, 3, 1)
     plt.imshow(  np.transpose(img[0], (1,2,0))  )
-    plt.suptitle('input')
+
     # output
     plt.subplot(2, 3, 2)
     plt.imshow(  np.transpose(rec[0], (1,2,0))  )
-    plt.suptitle('output')
+
     # rec
     plt.subplot(2, 3, 3)
     plt.imshow(  rec_robust  )
-    plt.suptitle('output_robust')
+
     # inp_robust
     plt.subplot(2, 3, 4)
     plt.imshow(  inp_robust  )
     plt.savefig(f'gen_out/results_{step}.png')
-    plt.suptitle('input robust')
+
     # outp_robust
     plt.subplot(2, 3, 5)
     plt.imshow(  inp_labels[0,0,:,:]  )
-    plt.suptitle('input labels')
+
     
     print(step)
