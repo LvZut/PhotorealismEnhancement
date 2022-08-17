@@ -17,8 +17,7 @@ for step in steps:
     inp = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
     outp = torch.load(f'gen_out/output_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
 
-    mseg_input = inp.numpy().copy()
-    inp_robust = torch.from_numpy(mseg_inference.inference(mseg_input)[0])
+    inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
 
     # print(rec.shape, robust.shape)
     plt.subplot(2, 3, 1)
