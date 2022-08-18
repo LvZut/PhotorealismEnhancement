@@ -69,7 +69,7 @@ class GBufferEncoder(nn.Module):
 		super(GBufferEncoder, self).__init__()
 
 		self._log = logging.getLogger('epe.network.gb_encoder')
-		self._log.debug(f'Creating G-bufferEncoder with {gbuffer_norm} norm for {num_classes} classes, {num_gbuffer_channels} G-buffers and {num_branches} branches.')
+		self._log.info(f'Creating G-bufferEncoder with {gbuffer_norm} norm for {num_classes} classes, {num_gbuffer_channels} G-buffers and {num_branches} branches.')
 
 		self.num_classes          = num_classes
 		self.num_gbuffer_channels = num_gbuffer_channels

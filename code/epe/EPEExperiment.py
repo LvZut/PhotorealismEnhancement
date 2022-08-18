@@ -110,7 +110,7 @@ class EPEExperiment(ee.GANExperiment):
                 self.fake_val_path   = Path(fake_cfg.get('val_filelist', None))
                 self.fake_test_path  = Path(fake_cfg.get('test_filelist', None))
 
-                self._log.debug(f'  Fake dataset {self.fake_name} in {self.fake_train_path}[train], {self.fake_val_path}[val], {self.fake_test_path}[test].')
+                self._log.info(f'  Fake dataset {self.fake_name} in {self.fake_train_path}[train], {self.fake_val_path}[val], {self.fake_test_path}[test].')
 
                 # real dataset
 
@@ -118,7 +118,7 @@ class EPEExperiment(ee.GANExperiment):
                 self.real_name     = str(real_cfg.get('name'))
                 self.real_basepath = Path(real_cfg.get('filelist', None))
 
-                self._log.debug(f'  Real dataset {self.real_name} in {self.real_basepath}.')
+                self._log.info(f'  Real dataset {self.real_name} in {self.real_basepath}.')
 
                 # sampling 
 
@@ -168,7 +168,7 @@ class EPEExperiment(ee.GANExperiment):
 
         def _init_dataset(self):
 
-                self._log.debug('Initializing datasets ...')
+                self._log.info('Initializing datasets ...')
 
                 # validation
                 if self.no_validation:
@@ -200,7 +200,7 @@ class EPEExperiment(ee.GANExperiment):
 
         def _init_network(self):
 
-                self._log.debug('Initializing networks ...')
+                self._log.info('Initializing networks ...')
 
                 # network arch depends on dataset
                 if self.dataset_train is not None:
@@ -212,8 +212,8 @@ class EPEExperiment(ee.GANExperiment):
                         self.gen_cfg['num_gbuffer_channels'] = self.dataset_fake_val.num_gbuffer_channels
                         self.gen_cfg['cls2gbuf']             = self.dataset_fake_val.cls2gbuf
 
-                self._log.debug(f'Fake dataset has {self.gen_cfg["num_classes"]} classes and {self.gen_cfg["num_gbuffer_channels"]} G-buffers.')
-                self._log.debug(f'Classes are mapped to G-Buffers via {self.gen_cfg["cls2gbuf"]}.')
+                self._log.info(f'Fake dataset has {self.gen_cfg["num_classes"]} classes and {self.gen_cfg["num_gbuffer_channels"]} G-buffers.')
+                self._log.info(f'Classes are mapped to G-Buffers via {self.gen_cfg["cls2gbuf"]}.')
 
                 generator_type     = self.cfg['generator']['type']
                 discriminator_type = self.cfg['discriminator']['type']
@@ -237,11 +237,11 @@ class EPEExperiment(ee.GANExperiment):
 
                 self.network           = nw.GAN(generator, discriminator).to(self.device)
                 self.adaptive_backprop = epe.utils.AdaptiveBackprop(len(self.network.discriminator), self.device, backprop_target) if not run_disc_always else None
-                self._log.debug(f'AdaptiveBackprop is [{"on" if self.adaptive_backprop else "off"}].')
-                self._log.debug(f'  check fake performance : [{"on" if self.check_fake_for_backprop else "off"}].')
-                self._log.debug(f'  target                 : {backprop_target}')
+                self._log.info(f'AdaptiveBackprop is [{"on" if self.adaptive_backprop else "off"}].')
+                self._log.info(f'  check fake performance : [{"on" if self.check_fake_for_backprop else "off"}].')
+                self._log.info(f'  target                 : {backprop_target}')
 
-                self._log.debug('Networks are initialized.')
+                self._log.info('Networks are initialized.')
                 # self._log.info(f'{self.network}')
                 pass
 

@@ -298,7 +298,7 @@ class HighResolutionNet(nn.Module):
                 super(HighResolutionNet, self).__init__()
 
                 self._log = logging.getLogger('epe.network.HRNet')
-                self._log.debug('Intializing network ...')
+                self._log.info('Intializing network ...')
 
                 self._gbuffer_encoder_norm = ie_config.get('gbuffer_encoder_norm', 'residual')
                 self._gbuffer_norm         = ie_config.get('gbuffer_norm', 'RAD')
@@ -311,13 +311,13 @@ class HighResolutionNet(nn.Module):
                 encoder_type = ie_config.get('encoder_type', 3)
                 self._encoder_type = GBufferEncoderType[encoder_type]
 
-                self._log.debug(f'  # stages              : {self._num_stages}')
-                self._log.debug(f'  G-Buffer encoder type : {self._encoder_type}')
-                self._log.debug(f'  G-Buffer encoder norms: {self._gbuffer_encoder_norm}')
-                self._log.debug(f'  G-Buffer norm         : {self._gbuffer_norm}')
-                self._log.debug(f'  Transition/Fusion norm: {self._other_norm}')
-                self._log.debug(f'  # Classes             : {self._num_classes}')
-                self._log.debug(f'  # G-Buffer channels   : {self._num_gbuf_channels}')
+                self._log.info(f'  # stages              : {self._num_stages}')
+                self._log.info(f'  G-Buffer encoder type : {self._encoder_type}')
+                self._log.info(f'  G-Buffer encoder norms: {self._gbuffer_encoder_norm}')
+                self._log.info(f'  G-Buffer norm         : {self._gbuffer_norm}')
+                self._log.info(f'  Transition/Fusion norm: {self._other_norm}')
+                self._log.info(f'  # Classes             : {self._num_classes}')
+                self._log.info(f'  # G-Buffer channels   : {self._num_gbuf_channels}')
 
                 # instead of a fixed dictionary with basic and bottleneck blocks
                 # as in the original HRNet, we generate it on the fly with 
@@ -350,8 +350,8 @@ class HighResolutionNet(nn.Module):
                         pass    
                 
                 self.stage1_cfg    = extra['STAGE1']
-                self._log.debug(f'  Stage 1')
-                self._log.debug(f'  {self.stage1_cfg}')
+                self._log.info(f'  Stage 1')
+                self._log.info(f'  {self.stage1_cfg}')
 
                 num_channels       = self.stage1_cfg['NUM_CHANNELS'][0]
                 block, block_exp   = blocks_dict[self.stage1_cfg['BLOCK']]

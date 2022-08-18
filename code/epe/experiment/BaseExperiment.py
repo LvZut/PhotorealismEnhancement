@@ -88,27 +88,27 @@ class NetworkState:
                 adam_beta2         = float(cfg.get('adam_beta2', 0.999))
                 optimizer          = str(cfg.get('type', 'adam'))
 
-                self._log.debug(f'  learning rate : {self.learning_rate}')
-                self._log.debug(f'  clip grad norm: {self.clip_gradient_norm}')
-                self._log.debug(f'  clip_weights  : {self.clip_weights}')
+                self._log.info(f'  learning rate : {self.learning_rate}')
+                self._log.info(f'  clip grad norm: {self.clip_gradient_norm}')
+                self._log.info(f'  clip_weights  : {self.clip_weights}')
 
-                self._log.debug(f'  optimizer     : {optimizer}')
+                self._log.info(f'  optimizer     : {optimizer}')
 
                 if optimizer == 'adam':
-                        self._log.debug(f'    ams         : {adam_ams}')
-                        self._log.debug(f'    beta        : {adam_beta}')
-                        self._log.debug(f'    beta2       : {adam_beta2}')
+                        self._log.info(f'    ams         : {adam_ams}')
+                        self._log.info(f'    beta        : {adam_beta}')
+                        self._log.info(f'    beta2       : {adam_beta2}')
                         self.optimizer = torch.optim.Adam(params=self.network.parameters(), lr=self.learning_rate, betas=(adam_beta, adam_beta2), weight_decay=weight_decay, amsgrad=adam_ams)
 
                 elif optimizer == 'adamw':
-                        self._log.debug(f'    ams         : {adam_ams}')
-                        self._log.debug(f'    beta        : {adam_beta}')
-                        self._log.debug(f'    beta2       : {adam_beta2}')
+                        self._log.info(f'    ams         : {adam_ams}')
+                        self._log.info(f'    beta        : {adam_beta}')
+                        self._log.info(f'    beta2       : {adam_beta2}')
                         self.optimizer = torch.optim.AdamW(params=self.network.parameters(), lr=self.learning_rate, betas=(adam_beta, adam_beta2), weight_decay=weight_decay, amsgrad=adam_ams)
 
                 elif optimizer == 'sgd':
-                        self._log.debug(f'    momentum      : {momentum}')
-                        self._log.debug(f'    weight_decay  : {weight_decay}')
+                        self._log.info(f'    momentum      : {momentum}')
+                        self._log.info(f'    weight_decay  : {weight_decay}')
                         self.optimizer = torch.optim.SGD(params=self.network.parameters(), lr=self.learning_rate, momentum=momentum, weight_decay=weight_decay)
 
                 else:
@@ -321,12 +321,12 @@ class BaseExperiment:
                 self._profile_stack  = bool(prof_cfg.get('stack', True))
                 self._profile_path   = Path(prof_cfg.get('path', '.'))
 
-                self._log.debug(f'  unpin        : {self.unpin}')
-                self._log.debug(f'  seed         : {self.seed}')
-                self._log.debug(f'  batch_size   : {self.batch_size}')
-                self._log.debug(f'  num_loaders  : {self.num_loaders}')
-                self._log.debug(f'  log_interval : {self._log_interval}')
-                self._log.debug(f'  profile      : {self._profile}')
+                self._log.info(f'  unpin        : {self.unpin}')
+                self._log.info(f'  seed         : {self.seed}')
+                self._log.info(f'  batch_size   : {self.batch_size}')
+                self._log.info(f'  num_loaders  : {self.num_loaders}')
+                self._log.info(f'  log_interval : {self._log_interval}')
+                self._log.info(f'  profile      : {self._profile}')
 
                 self.shuffle_test    = bool(self.cfg.get('shuffle_test', False))
                 self.shuffle_train   = bool(self.cfg.get('shuffle_train', True))
@@ -335,9 +335,9 @@ class BaseExperiment:
                 self.dbg_dir         = Path(self.cfg.get('out_dir', './out/'))
                 self.result_ext      = '.jpg' 
 
-                self._log.debug(f'  weight_dir   : {self.weight_dir}')
-                self._log.debug(f'  name_load    : {self.weight_init}{" (will not load anything)" if self.weight_init is None else ""}')
-                self._log.debug(f'  out_dir      : {self.dbg_dir}')
+                self._log.info(f'  weight_dir   : {self.weight_dir}')
+                self._log.info(f'  name_load    : {self.weight_init}{" (will not load anything)" if self.weight_init is None else ""}')
+                self._log.info(f'  out_dir      : {self.dbg_dir}')
 
                 train_cfg = dict(self.cfg.get('train', {}))
                 self.max_epochs      = int(train_cfg.get('max_epochs', -1))
@@ -349,13 +349,13 @@ class BaseExperiment:
                 self.val_interval    = int(train_cfg.get('val_interval', 20000))
 
 
-                self._log.debug(f'  training config:')
-                self._log.debug(f'    max_epochs      : {self.max_epochs}')
-                self._log.debug(f'    max_iterations  : {self.max_iterations}')
-                self._log.debug(f'    name_save       : {self.weight_save}')            
-                self._log.debug(f'    save_epochs     : {self.save_epochs}')
-                self._log.debug(f'    save_iterations : {self.save_iterations}')
-                self._log.debug(f'    validation      : {"off" if self.no_validation else f"every {self.val_interval}"}')
+                self._log.info(f'  training config:')
+                self._log.info(f'    max_epochs      : {self.max_epochs}')
+                self._log.info(f'    max_iterations  : {self.max_iterations}')
+                self._log.info(f'    name_save       : {self.weight_save}')            
+                self._log.info(f'    save_epochs     : {self.save_epochs}')
+                self._log.info(f'    save_iterations : {self.save_iterations}')
+                self._log.info(f'    validation      : {"off" if self.no_validation else f"every {self.val_interval}"}')
                 pass
                 
 

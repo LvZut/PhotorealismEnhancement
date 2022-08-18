@@ -66,7 +66,7 @@ class DiscriminatorEnsemble(nn.Module):
 
 		super(DiscriminatorEnsemble, self).__init__()
 		self._log  = logging.getLogger('epe.network.disc_ensemble') 
-		self._log.debug(discs)
+		self._log.info(discs)
 		self.discs = nn.ModuleList(discs)		
 		pass
 
@@ -117,7 +117,7 @@ class ProjectionDiscriminator(nn.Module):
 		norm               = cfg.get('norm', 'group')
 		
 		self._log = logging.getLogger('epe.network.proj_disc') 
-		self._log.debug(f'  Creating projection discriminator with {num_layers} layers and {norm} norm.')
+		self._log.info(f'  Creating projection discriminator with {num_layers} layers and {norm} norm.')
 
 		dims    = [dim_in] + [min(max_dim, dim_base*2**i) for i in range(num_layers)]
 		strides = [2]*num_strides + [1] * (num_layers+1-num_strides)
@@ -200,7 +200,7 @@ class PatchGANDiscriminator(DiscriminatorEnsemble):
 		configs = [(3, 64, self._max_dim, self._num_layers, self._num_layers)] * self._num_discs
 		super(PatchGANDiscriminator, self).__init__(make_disc_backbones(configs))
 		self._log = logging.getLogger('epe.network.patchgan')
-		self._log.debug(f'Discriminators: {self.discs}')
+		self._log.info(f'Discriminators: {self.discs}')
 		pass
 
 	def _parse_config(self, cfg):
@@ -245,7 +245,7 @@ class PerceptualDiscEnsemble(DiscriminatorEnsemble):
 
 		super(PerceptualDiscEnsemble, self).__init__(make_disc_backbones(configs, cfg))
 		self._log = logging.getLogger('epe.network.pde')
-		self._log.debug(f'Discriminators: {self.discs}')
+		self._log.info(f'Discriminators: {self.discs}')
 		pass
 
 	def _parse_config(self, cfg):
