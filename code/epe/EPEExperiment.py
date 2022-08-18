@@ -22,7 +22,7 @@ import epe.utils
 import epe.dataset as ds
 import epe.network as nw
 import epe.experiment as ee
-from epe.matching import MatchedCrops, IndependentCrops
+from epe.matching import MatchedCrops, IndependentCrops, FullImages
 
 torch.backends.cudnn.enabled = True
 torch.backends.cudnn.benchmark = True
@@ -190,6 +190,8 @@ class EPEExperiment(ee.GANExperiment):
                         elif self.sampling.startswith('independent_'):
                                 crop_size = int(self.sampling[len('independent_'):])
                                 self.dataset_train = IndependentCrops(source_dataset, target_dataset, self.sample_cfg)
+                        elif self.sampling == 'full':
+                                self.dataset_train = FullImages(source_dataset, target_dataset, self.sample_cfg)
                         else:
                                 raise NotImplementedError
                         pass

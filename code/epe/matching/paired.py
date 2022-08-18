@@ -138,4 +138,14 @@ class IndependentCrops(PairedDataset):
 	def __len__(self):
 		return len(self._source_dataset)
 
-		
+class FullImages(PairedDataset):
+	def __init__(self, source_dataset, target_dataset, cfg):
+		super(FullImages, self).__init__(source_dataset, target_dataset)
+		pass
+
+	def __getitem__(self, idx):
+		return self._source_dataset[idx], self._target_dataset[random.randint(0, len(self._target_dataset)-1)]
+
+
+	def __len__(self):
+		return len(self._source_dataset)
