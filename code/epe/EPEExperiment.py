@@ -188,7 +188,7 @@ class EPEExperiment(ee.GANExperiment):
                         if self.sampling == 'matching':
                                 self.dataset_train = MatchedCrops(source_dataset, target_dataset, self.sample_cfg)
                         elif self.sampling.startswith('independent_'):
-                                crop_size = int(self.sampling[len('independent_'):])
+                                # crop_size = int(self.sampling[len('independent_'):])
                                 self.dataset_train = IndependentCrops(source_dataset, target_dataset, self.sample_cfg)
                         elif self.sampling == 'full':
                                 self.dataset_train = FullImages(source_dataset, target_dataset, self.sample_cfg)
