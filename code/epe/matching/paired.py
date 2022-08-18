@@ -131,8 +131,8 @@ class IndependentCrops(PairedDataset):
 
 
 	def __getitem__(self, idx):
-		return self._sample_crop(self._source_dataset[idx]), \
-			self._sample_crop(self._target_dataset[random.randint(0, len(self._target_dataset)-1)])
+		return JointEPEBatch(self._sample_crop(self._source_dataset[idx]), \
+			self._sample_crop(self._target_dataset[random.randint(0, len(self._target_dataset)-1)]))
 
 
 	def __len__(self):
