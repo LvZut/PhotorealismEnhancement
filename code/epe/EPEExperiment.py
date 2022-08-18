@@ -151,7 +151,7 @@ class EPEExperiment(ee.GANExperiment):
                 self.vgg_input = str(perc_cfg.get('vgg_input', 'rgb'))
 
                 if self.vgg_input == 'robust':
-                        robust_cfg = config.load_cfg_from_cfg_file(str(perc_cfg.get('robust_config', 'config/robust_config/config_1080.yaml')))
+                        robust_cfg = config.load_cfg_from_cfg_file(str(perc_cfg.get('robust_config', 'config/robust_config/config_480.yaml')))
                         self.mseg_inference = mseg_task(robust_cfg)
 
 
