@@ -119,7 +119,7 @@ class IndependentCrops(PairedDataset):
 	def __init__(self, source_dataset, target_dataset, cfg):
 		super(IndependentCrops, self).__init__(source_dataset, target_dataset)
 
-		self._crop_size = int(cfg.get('crop_size', 588))
+		self._crop_size = int(cfg.get('crop_size', 196))
 		pass
 
 	def _sample_crop(self, batch):
