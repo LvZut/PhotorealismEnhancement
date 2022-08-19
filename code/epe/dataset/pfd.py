@@ -137,9 +137,9 @@ class PfDDataset(SyntheticDataset):
                         gt_labels = mat2tensor(gt_labels)
                         pass
                 else:
-                        img       = mat2tensor(data['img'].astype(np.float16) / 255.0)[:100000]
-                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))[:100000]
-                        gt_labels = mat2tensor(data['shader'].astype(np.float16))[:100000]
+                        img       = mat2tensor(data['img'].astype(np.float16) / 255.0)[:10000]
+                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))[:10000]
+                        gt_labels = mat2tensor(data['shader'].astype(np.float16))[:10000]
                         pass
 
                 # Convert rgb labels to class labels
