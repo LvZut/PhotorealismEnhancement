@@ -24,7 +24,7 @@ if __name__ == '__main__':
     assert features_nn.shape[1] == dim
     print(f'Found {features_nn.shape[0]} crops for target dataset.')
     
-    breakpoint()
+
 
     nn_index = faiss.IndexFlatL2(dim)
     nn_index.add(features_nn)

@@ -32,7 +32,6 @@ def merge_features(I, D, I_split, D_split, index_start):
     D_in = D
     I_in = I
 
-    #breakpoint()
     for row in tqdm(range(I.shape[0])):
         done = False
 

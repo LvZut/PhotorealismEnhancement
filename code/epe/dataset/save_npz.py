@@ -103,11 +103,9 @@ def main():
 
         for index_ep, episode in tqdm(enumerate(episode_folders, start=start_episode)):
             episode_steps = [ f.path for f in os.scandir(episode) if f.is_dir() ]
-            # breakpoint()
+            
             arguments_list = []
             for index_step, step in enumerate(episode_steps):
-                # breakpoint()
-                # print(step)
 
                 for suffix in suffixes:
                     step_path = f'{step}/'

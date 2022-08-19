@@ -251,7 +251,7 @@ class EPEExperiment(ee.GANExperiment):
 
 
         def _run_generator(self, batch_fake, batch_real, batch_id):
-                breakpoint()
+
                 rec_fake     = self.network.generator(batch_fake)
 
                 realism_maps = self.network.discriminator.forward(\
@@ -467,7 +467,6 @@ class EPEExperiment(ee.GANExperiment):
 
         def imagewriter(self, results, id):
                 new_img, old_img, _ = results
-                #breakpoint()
                 
                 self.writer.add_image('Real Image', old_img[0], id)
                 self.writer.add_image('Fake Image', new_img[0], id)
