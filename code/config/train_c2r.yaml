@@ -17,6 +17,7 @@ train:
   name_save: c2r_LAYERS_fixed
   shuffle_train: true
   val_interval: 5000 # run inference on validation set every X iterations
+  no_validation: False # prevents val dataloader from loading in, also prevents tensorboard preview images
    
 test:
   shuffle_test: false

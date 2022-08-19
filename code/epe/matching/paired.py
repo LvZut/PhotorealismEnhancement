@@ -144,7 +144,8 @@ class FullImages(PairedDataset):
 		pass
 
 	def __getitem__(self, idx):
-		return self._source_dataset[idx], self._target_dataset[random.randint(0, len(self._target_dataset)-1)]
+		def __getitem__(self, idx):
+			return JointEPEBatch(self._source_dataset[idx], self._target_dataset[random.randint(0, len(self._target_dataset)-1)])
 
 
 	def __len__(self):

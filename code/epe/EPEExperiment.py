@@ -151,7 +151,7 @@ class EPEExperiment(ee.GANExperiment):
                 self.vgg_input = str(perc_cfg.get('vgg_input', 'rgb'))
 
                 if self.vgg_input == 'robust':
-                        robust_cfg = config.load_cfg_from_cfg_file(str(perc_cfg.get('robust_config', 'config/robust_config/config_480.yaml')))
+                        robust_cfg = config.load_cfg_from_cfg_file(str(perc_cfg.get('robust_config', 'config/robust_config/config_1080.yaml')))
                         self.mseg_inference = mseg_task(robust_cfg)
 
 
@@ -288,7 +288,7 @@ class EPEExperiment(ee.GANExperiment):
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels[0,0,:,:], robust_rec_fake)[0])
 
                         # debug inputs once
-                        if (self.i > 2000) and (self.i < 2100):
+                        if (self.i > 100) and (self.i < 200):
                                 #print(batch_fake.type(), robust_rec_fake.type())
                                 try:
                                     torch.save(batch_fake.robust_labels, f'gen_out/robust_{self.i}.pt')

@@ -18,7 +18,7 @@ mseg_inference = mseg_task(robust_cfg)
 # inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
 # plt.imshow(inp_robust)
 # plt.savefig('robust_out.png')
-steps = list(range(2001, 2099, 2))
+steps = list(range(101, 199, 2))
 
 
 for step in steps:
