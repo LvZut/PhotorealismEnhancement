@@ -140,7 +140,6 @@ class JointEPEBatch(Batch):
 
 	@classmethod
 	def collate_fn(cls, samples):
-		breakpoint()
 		reals = [s.real for s in samples]
 		fakes = [s.fake for s in samples]
 		return JointEPEBatch(EPEBatch.collate_fn(fakes), EPEBatch.collate_fn(reals))
