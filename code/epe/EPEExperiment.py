@@ -62,6 +62,7 @@ dataset_pairings = [\
         'independent_256',
         'independent_256',
         'independent_400',
+        'full',
 ]
 
 def tee_loss(x, y):
