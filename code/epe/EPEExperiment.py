@@ -191,6 +191,7 @@ class EPEExperiment(ee.GANExperiment):
                                 # crop_size = int(self.sampling[len('independent_'):])
                                 self.dataset_train = IndependentCrops(source_dataset, target_dataset, self.sample_cfg)
                         elif self.sampling == 'full':
+                                self._log.info('Using full images for training ...')
                                 self.dataset_train = FullImages(source_dataset, target_dataset, self.sample_cfg)
                         else:
                                 raise NotImplementedError
