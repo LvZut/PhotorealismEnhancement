@@ -143,21 +143,21 @@ class FullImages(PairedDataset):
 		super(FullImages, self).__init__(source_dataset, target_dataset)
 		pass
 
-	def __getitem__(self, idx):
-		def __getitem__(self, idx):
-			return JointEPEBatch(self._source_dataset[idx], self._target_dataset[random.randint(0, len(self._target_dataset)-1)])
-
-	# def _sample_crop(self, batch):
-	# 	r1 = batch.img.shape[-2]
-	# 	r0 = 0
-	# 	c1 = batch.img.shape[-1]
-	# 	c0 = 0
-	# 	return batch.crop(r0, r1, c0, c1)
-
-
 	# def __getitem__(self, idx):
-	# 	return JointEPEBatch(self._sample_crop(self._source_dataset[idx]), \
-	# 		self._sample_crop(self._target_dataset[random.randint(0, len(self._target_dataset)-1)]))
+	# 	def __getitem__(self, idx):
+	# 		return JointEPEBatch(self._source_dataset[idx], self._target_dataset[random.randint(0, len(self._target_dataset)-1)])
+
+	def _sample_crop(self, batch):
+		r1 = batch.img.shape[-2]
+		r0 = 0
+		c1 = batch.img.shape[-1]
+		c0 = 0
+		return batch.crop(r0, r1, c0, c1)
+
+
+	def __getitem__(self, idx):
+		return JointEPEBatch(self._sample_crop(self._source_dataset[idx]), \
+			self._sample_crop(self._target_dataset[random.randint(0, len(self._target_dataset)-1)]))
 
 	def __len__(self):
 		return len(self._source_dataset)
