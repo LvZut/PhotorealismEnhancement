@@ -127,17 +127,19 @@ class PfDDataset(SyntheticDataset):
 
                 # non-fake gbuffers contain img and gt_labels as well
                 if self.gbuffers == 'fake':
-                        img       = mat2tensor(imageio.imread(img_path).astype(np.float32) / 255.0)
-                        gbuffers  = mat2tensor(data['data'].astype(np.float32))
+
+                        # reduced dtypes from float32 to float16
+                        img       = mat2tensor(imageio.imread(img_path).astype(np.float16) / 255.0)
+                        gbuffers  = mat2tensor(data['data'].astype(np.float16))
                         gt_labels = material_from_gt_label(imageio.imread(gt_label_path))
                         if gt_labels.shape[0] != img.shape[-2] or gt_labels.shape[1] != img.shape[-1]:
                                 gt_labels = resize(gt_labels, (img.shape[-2], img.shape[-1]), anti_aliasing=True, mode='constant')
                         gt_labels = mat2tensor(gt_labels)
                         pass
                 else:
-                        img       = mat2tensor(data['img'].astype(np.float32) / 255.0)
-                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float32))
-                        gt_labels = mat2tensor(data['shader'].astype(np.float32))
+                        img       = mat2tensor(data['img'].astype(np.float16) / 255.0)
+                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))
+                        gt_labels = mat2tensor(data['shader'].astype(np.float16))
                         pass
 
                 # Convert rgb labels to class labels
