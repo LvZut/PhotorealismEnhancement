@@ -516,8 +516,6 @@ class BaseExperiment:
         def train(self):
                 """Train a network."""
 
-                torch.cuda.empty_cache()
-
                 self.loader = torch.utils.data.DataLoader(self.dataset_train, \
                         batch_size=self.batch_size, shuffle=self.shuffle_train, \
                         num_workers=self.num_loaders, pin_memory=(not self.unpin), drop_last=True, collate_fn=self.collate_fn_train, worker_init_fn=seed_worker)

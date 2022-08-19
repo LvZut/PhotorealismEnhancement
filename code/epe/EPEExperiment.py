@@ -251,6 +251,7 @@ class EPEExperiment(ee.GANExperiment):
 
 
         def _run_generator(self, batch_fake, batch_real, batch_id):
+                breakpoint()
                 rec_fake     = self.network.generator(batch_fake)
 
                 realism_maps = self.network.discriminator.forward(\
