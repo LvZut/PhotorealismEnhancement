@@ -158,6 +158,8 @@ class PfDDataset(SyntheticDataset):
 
                 robust_labels = imageio.imread(robust_label_path)
                 robust_labels = torch.LongTensor(robust_labels[:,:]).unsqueeze(0)
+                
+                del data
 
                 return EPEBatch(img, gbuffers=gbuffers, gt_labels=gt_labels, robust_labels=robust_labels, path=img_path, coords=None)
 
