@@ -124,9 +124,9 @@ class PfDDataset(SyntheticDataset):
 
                 #data = np.load(gbuffer_path,allow_pickle=True,fix_imports=True,encoding='latin1')
                 data = np.load(gbuffer_path)
-                data.img = data.img[:100000]
-                data.gbuffers = data.gbuffers[:100000]
-                data.shader = data.shader[:100000]
+                data['img'] = data['img'][:100000]
+                data['gbuffers'] = data['gbuffers'][:100000]
+                data['shader'] = data['shader'][:100000]
 
                 # non-fake gbuffers contain img and gt_labels as well
                 if self.gbuffers == 'fake':
