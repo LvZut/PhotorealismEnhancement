@@ -124,9 +124,6 @@ class PfDDataset(SyntheticDataset):
 
                 #data = np.load(gbuffer_path,allow_pickle=True,fix_imports=True,encoding='latin1')
                 data = np.load(gbuffer_path)
-                data['img'] = data['img'][:100000]
-                data['gbuffers'] = data['gbuffers'][:100000]
-                data['shader'] = data['shader'][:100000]
 
                 # non-fake gbuffers contain img and gt_labels as well
                 if self.gbuffers == 'fake':
@@ -140,9 +137,9 @@ class PfDDataset(SyntheticDataset):
                         gt_labels = mat2tensor(gt_labels)
                         pass
                 else:
-                        img       = mat2tensor(data['img'].astype(np.float16) / 255.0)
-                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))
-                        gt_labels = mat2tensor(data['shader'].astype(np.float16))
+                        img       = mat2tensor(data['img'].astype(np.float16) / 255.0)[:100000]
+                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))[:100000]
+                        gt_labels = mat2tensor(data['shader'].astype(np.float16))[:100000]
                         pass
 
                 # Convert rgb labels to class labels
