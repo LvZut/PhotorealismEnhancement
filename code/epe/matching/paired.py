@@ -147,7 +147,7 @@ class FullImages(PairedDataset):
 	# 	def __getitem__(self, idx):
 	# 		return JointEPEBatch(self._source_dataset[idx], self._target_dataset[random.randint(0, len(self._target_dataset)-1)])
 
-	def _sample_full(self, batch):
+	def _sample_full(self, batch, r1, r1):
 		r1 = batch.img.shape[-2]
 		r0 = 0
 		c1 = batch.img.shape[-1]
@@ -163,8 +163,11 @@ class FullImages(PairedDataset):
 
 
 	def __getitem__(self, idx):
-		return JointEPEBatch(self._sample_full(self._source_dataset[idx]), \
-			self._sample_crop(self._target_dataset[random.randint(0, len(self._target_dataset)-1)]))
+		batch_fake = self._source_dataset[idx]
+		r1 = batch_fake.shape[-2]
+		c1 = batch_fake.shape[-1]
+		return JointEPEBatch(self._sample_full(batch_fake, r1, c1), \
+			self._sample_crop(self._target_dataset[random.randint(0, len(self._target_dataset)-1)], r1, c1))
 
 	def __len__(self):
 		return len(self._source_dataset)
