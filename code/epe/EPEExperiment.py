@@ -273,16 +273,16 @@ class EPEExperiment(ee.GANExperiment):
                 if self.vgg_input == 'robust':
                         # forward rec fake to get robust labels
 
-                        mseg_input = rec_fake.detach().cpu().numpy().copy()
+                        # denormalize generator output before putting through mseg
+                        mseg_input = rec_fake.detach().cpu().numpy().copy() * 255
+
+
                         # print('image_shape:', mseg_input.shape)
 
-                        # output is BCHW
+                        # output is BCHW, normalize again for loss calculation
                         robust_rec_fake = self.mseg_inference.inference(mseg_input)
-                        # np.save(f'mseg_input_{batch_id}', mseg_input)
-                        # print('Inference on rec_fake complete!', type(robust_rec_fake), robust_rec_fake.shape)
-                        # torch.save(f'mseg_output_{batch_id}.pt', robust_rec_fake)
-                        # calc loss between robust and rec_robust (use other loss than lpips?)
-                        # print(f'robust labels shape: {batch_fake.robust_labels.shape}, robust rec fake shape: {robust_rec_fake.shape}')
+
+                        # maybe rerun inference on input image instead of using full image segmentation
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
@@ -291,11 +291,11 @@ class EPEExperiment(ee.GANExperiment):
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels[0,0,:,:], robust_rec_fake)[0])
 
                         # debug inputs once
-                        if (self.i > 100) and (self.i < 200):
+                        if (self.i > 1000) and (self.i < 1100):
                                 #print(batch_fake.type(), robust_rec_fake.type())
                                 try:
-                                    torch.save(batch_fake.robust_labels, f'gen_out/robust_{self.i}.pt')
-                                    torch.save(robust_rec_fake, f'gen_out/rec_{self.i}.pt')
+                                    torch.save(batch_fake.robust_labels, f'gen_out/input_robust_{self.i}.pt')
+                                    torch.save(robust_rec_fake, f'gen_out/output_robust_{self.i}.pt')
                                     torch.save(batch_fake.img, f'gen_out/input_{self.i}.pt')
                                     torch.save(rec_fake, f'gen_out/output_{self.i}.pt')
                                 except:
