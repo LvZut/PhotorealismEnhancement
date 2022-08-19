@@ -5,6 +5,10 @@ import numpy as np
 from epe.mseg_inference import mseg_task
 from mseg_semantic.utils import config
 
+
+def normalize(img):
+    return (img - np.min(img)) / (np.max(img) - np.min(img))
+
 robust_cfg = config.load_cfg_from_cfg_file('config/robust_config/config_480.yaml')
 mseg_inference = mseg_task(robust_cfg)
 
@@ -14,7 +18,7 @@ mseg_inference = mseg_task(robust_cfg)
 # inp_robust = torch.from_numpy(mseg_inference.inference(inp.copy())[0])
 # plt.imshow(inp_robust)
 # plt.savefig('robust_out.png')
-steps = list(range(1001, 1099, 2))
+steps = list(range(2001, 2099, 2))
 
 
 for step in steps:
@@ -22,8 +26,10 @@ for step in steps:
     inp_labels = torch.load(f'gen_out/robust_{step}.pt', map_location=torch.device('cpu'))
     img = torch.load(f'gen_out/input_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
     rec = torch.load(f'gen_out/output_{step}.pt', map_location=torch.device('cpu')).detach().numpy()
+    rec = normalize(rec)
 
     inp_robust = torch.from_numpy(mseg_inference.inference(img.copy())[0])
+    
 
     # input
     plt.subplot(2, 3, 1)
