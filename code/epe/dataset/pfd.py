@@ -92,8 +92,9 @@ class PfDDataset(SyntheticDataset):
         @property
         def num_classes(self):
                 """ Number of classes in the semantic segmentation maps."""
-                return {'fake':12, 'all':18, 'img':0, 'no_light':0, 'geometry':0}[self.gbuffers]
-
+                return {'fake':12, 'all':44, 'img':0, 'no_light':0, 'geometry':0}[self.gbuffers]
+                                        #debug, 44 according to current github page?
+                                        # 38 was found in gt_labels
 
         @property
         def cls2gbuf(self):
@@ -144,11 +145,8 @@ class PfDDataset(SyntheticDataset):
 
 
                 # debugging, try colors, maybe boolean?
-                breakpoint()
-                # (3, 720, 1280)
-                gt_labels = torch.nn.functional.one_hot(gt_labels[0], (self.num_classes)).permute(2,1,0)
-                breakpoint()
-                
+                # (3, 720, 1280), 44 should be self.num_classes
+                gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)
 
 
                 # Convert rgb labels to class labels
