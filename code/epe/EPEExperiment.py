@@ -291,7 +291,7 @@ class EPEExperiment(ee.GANExperiment):
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels[0,0,:,:], robust_rec_fake)[0])
 
                         # debug inputs once
-                        if (self.i > 1000) and (self.i < 1100):
+                        if ((self.i > 1000) and (self.i < 1100)) or (0 >= self.i % 10000 >= 100):
                                 #print(batch_fake.type(), robust_rec_fake.type())
                                 try:
                                     torch.save(batch_fake.robust_labels, f'gen_out/input_robust_{self.i}.pt')
