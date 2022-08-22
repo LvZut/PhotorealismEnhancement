@@ -145,7 +145,9 @@ class PfDDataset(SyntheticDataset):
 
                 # debugging, try colors, maybe boolean?
                 breakpoint()
-                gt_labels = torch.nn.functional.one_hot(gt_labels[0, 0])
+                # (3, 720, 1280)
+                gt_labels = torch.nn.functional.one_hot(gt_labels[0], (self.num_classes)).permute(2,1,0)
+                breakpoint()
                 
 
 
