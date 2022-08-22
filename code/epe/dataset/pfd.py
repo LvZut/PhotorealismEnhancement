@@ -142,6 +142,13 @@ class PfDDataset(SyntheticDataset):
                         gt_labels = mat2tensor(data['shader'].astype(np.float16))
                         pass
 
+
+                # debugging, try colors, maybe boolean?
+                breakpoint()
+                gt_labels = torch.nn.functional.one_hot(gt_labels[0, 0])
+                
+
+
                 # Convert rgb labels to class labels
                 if torch.max(gt_labels) > 128:
                         gt_labels = gt_labels / 255.0
