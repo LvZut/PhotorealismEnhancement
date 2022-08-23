@@ -63,7 +63,7 @@ class PfDDataset(SyntheticDataset):
                                 pass
                         pass
 
-
+                self.once = True
                 try:
                         # normalize gbuffers mean/std if pdf_stats.npz exists
                         data = np.load(Path(__file__).parent / 'pfd_stats.npz')
@@ -146,8 +146,13 @@ class PfDDataset(SyntheticDataset):
 
                 # debugging, try colors, maybe boolean?
                 # (3, 720, 1280), 44 should be self.num_classes
+                if self.once:
+                        torch.save(gt_labels, 'labels_in.pt')
                 gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)
 
+                if self.once:
+                        torch.save(gt_labels, 'labels_out.pt')
+                        self.once = False
 
                 # Convert rgb labels to class labels
                 if torch.max(gt_labels) > 128:
