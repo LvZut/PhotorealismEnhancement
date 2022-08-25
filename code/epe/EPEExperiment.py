@@ -161,8 +161,8 @@ class EPEExperiment(ee.GANExperiment):
 
 
 
-        
-                self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix=self.real_name)
+                train_cfg = dict(self.cfg.get('train', {}))
+                self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix={str(train_cfg.get('name_save', 'model'))})
                 
                 pass
 
@@ -462,7 +462,7 @@ class EPEExperiment(ee.GANExperiment):
 
         def logwriter(self, name, data, i):
                 # 0 for discriminator steps, 1 for generator steps
-                if (i % 100) == 0 or (i % 100) == 1:
+                if (self.action != 'test') and ( (i % 100) == 0 or (i % 100) == 1 ):
                         self.writer.add_scalar(name, data, i)
 
         def imagewriter(self, results, id):
