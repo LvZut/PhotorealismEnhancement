@@ -286,6 +286,9 @@ class EPEExperiment(ee.GANExperiment):
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
+                        print(f'Onehot encode robust_rec_fake and batch_fake.img\n gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)')
+                        
+
 
                         # try MSE instead of other vgg_loss?
                         loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels[0,0,:,:], robust_rec_fake)[0])
