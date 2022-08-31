@@ -162,7 +162,7 @@ class EPEExperiment(ee.GANExperiment):
 
 
                 train_cfg = dict(self.cfg.get('train', {}))
-                self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix={str(train_cfg.get('name_save', 'model'))})
+                self.writer = SummaryWriter(log_dir=args.log_dir, filename_suffix=str(train_cfg.get('name_save', 'model')))
                 
                 pass
 
