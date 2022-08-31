@@ -65,4 +65,14 @@ class MSELoss(nn.Module):
 	def forward_fake(self, img, rec):
 
 		
-		return [self.MSE(img.double(), torch.squeeze(rec.double()))]
+		return self.MSE(img.double(), torch.squeeze(rec.double()))
+
+class CELoss(nn.Module):
+	def __init__(self):
+		super().__init__()
+		self.CELoss = nn.CrossEntropyLoss()
+
+	def forward_fake(self, rec, img):
+
+		
+		return self.CELoss(rec, img)

@@ -47,7 +47,8 @@ vgg_losses = {\
         'lpips_vgg':     lambda vgg: nw.LPIPSLoss(net='vgg'),
         'munit':         lambda vgg: nw.VGGLoss(vgg, 'munit'),
         'johnson':       lambda vgg: nw.VGGLoss(vgg, 'johnson'),
-        'MSE' :          lambda vgg: nw.MSELoss()
+        'MSE' :          lambda vgg: nw.MSELoss(),
+        'CELoss':        lambda vgg: nw.CELoss()
 }
 
 
@@ -286,12 +287,14 @@ class EPEExperiment(ee.GANExperiment):
 
                         robust_rec_fake = torch.from_numpy(robust_rec_fake[0]).to(self.device)
 
-                        print(f'Onehot encode robust_rec_fake and batch_fake.img\n gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)')
-                        breakpoint()
+                        # print(f'Onehot encode robust_rec_fake and batch_fake.img\n gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)')
+                        # breakpoint()
 
+                        # 194 is number of classses specified in robust config (config/robust_config/config_n.yaml)
+                        robust_rec_fake_onehot = torch.nn.functional.one_hot(robust_rec_fake.long(), (194)).permute(2,0,1).unsqueeze(0).float()
+                        # robust_labels_onehot = torch.nn.functional.one_hot(batch_fake.robust_lables[0][0].long(), (194))
 
-                        # try MSE instead of other vgg_loss?
-                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(batch_fake.robust_labels[0,0,:,:], robust_rec_fake)[0])
+                        loss, log_info['vgg'] = tee_loss(loss, self.vgg_weight * self.vgg_loss.forward_fake(robust_rec_fake_onehot, batch_fake.robust_labels[0]))
 
                         # debug inputs once
                         if ((self.i > 1000) and (self.i < 1100)) or (0 >= self.i % 10000 >= 100):
