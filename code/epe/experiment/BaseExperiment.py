@@ -594,7 +594,7 @@ class BaseExperiment:
                 if self.weight_init is not None:
                         self._load_model()
                         pass
-
+                self._log.info('starting test..')
                 self.network.eval()
                 with torch.no_grad():
                         for bi, batch_fake in enumerate(self.loader_fake):                
@@ -604,7 +604,7 @@ class BaseExperiment:
                                 pass
                         pass
                 pass
-
+                self._log.info('finished test')
 
         def infer(self):
                 """Run network on single example."""
