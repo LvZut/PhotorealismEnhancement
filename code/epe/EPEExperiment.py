@@ -180,7 +180,6 @@ class EPEExperiment(ee.GANExperiment):
                 else:
                         self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_val_path, 4, True))
                         pass
-                breakpoint()
 
                 # training
 
@@ -201,6 +200,7 @@ class EPEExperiment(ee.GANExperiment):
                         pass
                 else:
                         self.dataset_train = None
+                breakpoint()
                 pass
 
 
