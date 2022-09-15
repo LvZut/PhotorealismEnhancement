@@ -216,6 +216,7 @@ class GANExperiment(BaseExperiment):
                 self.network.eval()
 
                 self._log.info('starting test..')
+                breakpoint()
                 with torch.no_grad():
                         for bi, batch_fake in enumerate(self.loader_fake):                
                                 print(f'batch {bi}, size {batch_fake.img.size()}')
