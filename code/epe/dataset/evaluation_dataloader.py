@@ -49,5 +49,6 @@ class evaluation_dataloader_real(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, idx):
+        print('batch ', idx)
         batch = self.dataset[idx]#.to(self.device)
         return {'images' : batch.img}
