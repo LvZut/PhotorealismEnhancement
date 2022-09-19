@@ -481,6 +481,11 @@ class EPEExperiment(ee.GANExperiment):
         pass
 
 
+        def evaluate_model(self):
+                self.logger.info('evaluating!')
+                pass
+
+
 if __name__ == '__main__':
 
         parser = ArgumentParser()
