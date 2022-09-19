@@ -23,4 +23,6 @@ class evaluation_dataloader(Dataset):
 
     def __getitem__(self, idx):
         batch = self.dataloader.__getitem__(idx)
-        return self.gen(batch.fake)
+        model_out = self.gen(batch.fake)
+        del batch
+        return model_out

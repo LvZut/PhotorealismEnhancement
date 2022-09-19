@@ -201,6 +201,7 @@ class EPEExperiment(ee.GANExperiment):
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
                         self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
+                        self.dataset_train = None
                 else:
                         self.dataset_train = None
                 # breakpoint()
@@ -490,6 +491,10 @@ class EPEExperiment(ee.GANExperiment):
                 from dataset.evaluation_dataloader import evaluation_dataloader
                 self._log.info('evaluating!')
                 
+                if self.weight_init is not None:
+                        self._load_model()
+                        pass
+
                 # self.dataset_fake_val self.dataset_real_val
                 fake_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, self.seed_worker)
                 breakpoint()
