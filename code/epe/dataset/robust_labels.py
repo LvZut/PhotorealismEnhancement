@@ -64,7 +64,6 @@ class RobustlyLabeledDataset(ImageDataset):
 		img = mat2tensor(img)
 
 		if self.return_dict:
-			breakpoint()
 			return {'images' : img}
 
 		label_path    = self._img2label[img_path]
