@@ -481,7 +481,7 @@ class EPEExperiment(ee.GANExperiment):
         pass
 
 
-        def evaluate_model(self):
+        def infer(self):
                 self.logger.info('evaluating!')
                 pass
 
