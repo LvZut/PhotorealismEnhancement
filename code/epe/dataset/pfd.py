@@ -125,6 +125,7 @@ class PfDDataset(SyntheticDataset):
                 gbuffers_all = torch.Tensor([])
                 gt_labels_all = torch.Tensor([])
                 robust_labels_all = torch.Tensor([])
+                path = []
 
                 for i in index:
                         breakpoint()
