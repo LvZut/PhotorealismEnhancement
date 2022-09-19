@@ -22,7 +22,7 @@ class RobustlyLabeledDataset(ImageDataset):
 		self._log = logging.getLogger(f'epe.dataset.{name}')
 
 		self._img2label = {}
-		for img_path,lab_path in img_and_robust_label_paths[:100]:
+		for img_path,lab_path in img_and_robust_label_paths[:10000]:
 			img_path = Path(img_path)
 			lab_path = Path(lab_path)
 

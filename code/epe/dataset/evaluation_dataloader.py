@@ -22,14 +22,17 @@ class evaluation_dataloader_fake(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, idx):
-        # get item and run inference with model before returning
-        batch = self.dataset[idx]
+        if idx < self.__len__():
+            # get item and run inference with model before returning
+            batch = self.dataset[idx]
 
-        # same clamping is used for inference during testing
-        model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
-        del batch
-        # breakpoint()
-        return {'images' : model_out}
+            # same clamping is used for inference during testing
+            model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
+            del batch
+            # breakpoint()
+            return {'images' : model_out}
+        else:
+            raise IndexError
 
 class evaluation_dataloader_real(Dataset):
     """ Wrapper around dataloader that performs inference
@@ -51,8 +54,8 @@ class evaluation_dataloader_real(Dataset):
 
     def __getitem__(self, idx):
         if idx < self.__len__():
-            self.count += 1
-            print('batch ', self.count, idx )
+            # self.count += 1
+            # print('batch ', self.count, idx )
             batch = self.dataset[idx]#.to(self.device)
             return {'images' : batch.img}
         else:
