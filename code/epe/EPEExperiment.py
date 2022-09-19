@@ -507,19 +507,20 @@ class EPEExperiment(ee.GANExperiment):
                 self.dataloader_fake = evaluation_dataloader_fake(self.dataset_fake_val, self.network.generator, self.device)
                 
                 self.dataloader_real = evaluation_dataloader_real(self.dataset_real_val, self.device)
+                self._log.info(f'Currently using {len(self.dataloader_real)} real samples..')
                 
                 self._log.info('Creating metric...')
                 fid_metric = FID()
                 
-                self._log.info('Finished computing first set of feats..')
                 real_feats = fid_metric.compute_feats(self.dataloader_real)
+                self._log.info('Finished computing first set of feats..')
                 breakpoint()
-                self._log.info('Finished computing second set of feats..')
 
 
 
 
                 fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
+                self._log.info('Finished computing second set of feats..')
 
 
                 fid: torch.Tensor = fid_metric(fake_fid_feats, real_feats)
