@@ -6,7 +6,7 @@ class evaluation_dataloader(Dataset):
     """ Wrapper around dataloader that performs inference
         using generator model given in class init """
 
-    def __init__(self, dataset, gen, transform=None):
+    def __init__(self, dataset, gen, device, transform=None):
         """
         Args:
             dataset (Torch dataset) : Feeds images to generator
@@ -15,6 +15,7 @@ class evaluation_dataloader(Dataset):
         self.gen = gen
         self.transform = transform
         self.dataset = dataset
+        self.device = device
 
     def __len__(self):
         #return len(self.dataloader)
@@ -24,6 +25,6 @@ class evaluation_dataloader(Dataset):
         # get item and run inference with model before returning
         breakpoint()
         batch = self.dataset[idx]
-        model_out = self.gen(batch.fake)
+        model_out = self.gen(batch.to(self.device))
         del batch
         return model_out
