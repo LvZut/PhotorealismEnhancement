@@ -15,6 +15,7 @@ class evaluation_dataloader(Dataset):
         self.gen = gen
         self.transform = transform
         self.dataloader_fake = dataloader_fake
+        self.dataset = dataset
         self.dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=collate_fn_val, worker_init_fn=seed_worker)
         
 
@@ -23,9 +24,9 @@ class evaluation_dataloader(Dataset):
 
     def __getitem__(self, idx):
         if self.dataloader_fake:
-            batch = self.dataloader[idx]
+            batch = self.dataset[idx]
             model_out = self.gen(batch.fake)
             del batch
             return model_out
         else:
-            return self.dataloader[idx].real
+            return self.dataset[idx].real
