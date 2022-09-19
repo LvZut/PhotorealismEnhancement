@@ -10,7 +10,7 @@ from torch import autograd
 from .BaseExperiment import BaseExperiment, NetworkState, toggle_grad, seed_worker
 
 class GANExperiment(BaseExperiment):
-        actions  = ['train', 'test', 'infer']
+        actions  = ['train', 'test', 'infer', 'evaluate_model']
         networks = {}
 
         def __init__(self, args):
