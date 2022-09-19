@@ -30,11 +30,11 @@ class evaluation_dataloader_fake(Dataset):
 
                 # same clamping is used for inference during testing
                 model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
-                del batch
                 if not isinstance(result, torch.Tensor):
-                    result = batch
+                    result = model_out
                 else:
                     torch.cat(result, batch)
+                del batch
             # breakpoint()
             return {'images' : result}
         else:
