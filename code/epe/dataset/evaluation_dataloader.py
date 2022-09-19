@@ -6,7 +6,7 @@ class evaluation_dataloader_fake(Dataset):
     """ Wrapper around dataloader that performs inference
         using generator model given in class init """
 
-    def __init__(self, dataset, gen, device, batch_size transform=None):
+    def __init__(self, dataset, gen, device, batch_size, transform=None):
         """
         Args:
             dataset (Torch dataset) : Feeds images to generator
