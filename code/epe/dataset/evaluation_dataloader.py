@@ -46,11 +46,8 @@ class evaluation_dataloader_real(Dataset):
         self.device = device
 
     def __len__(self):
-        #return len(self.dataloader)
         return len(self.dataset)
 
     def __getitem__(self, idx):
-        # get item and run inference with model before returning
         batch = self.dataset[idx].to(self.device)
-        breakpoint()
-        return {'images' : batch.imgs}
+        return {'images' : batch.img}
