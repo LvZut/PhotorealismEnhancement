@@ -1,5 +1,5 @@
 import torch
-import torch.utils.data.Dataset as Dataset
+from torch.utils.data import Dataset, DataLoader
 
 
 class evaluation_dataloader(Dataset):
