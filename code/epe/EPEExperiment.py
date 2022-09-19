@@ -497,12 +497,24 @@ class EPEExperiment(ee.GANExperiment):
                         self._load_model()
                         pass
 
+                self.network.eval()
+
                 # self.dataset_fake_val self.dataset_real_val
                 fake_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, seed_worker)
-                breakpoint()
-                        
+                
+                real_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, seed_worker, dataloader_fake=False)
+                
+                self._log.info('Creating metric...')
+                fid_metric = FID()
+                
+                fake_feats = fid_metric.compute_feats(fake_loader)
+                self._log.info('Finished computing first set of feats..')
+                real_feats = fid_metric.compute_feats(real_loader)
+                self._log.info('Finished computing second set of feats..')
+                fid: torch.Tensor = fid_metric(fake_feats, real_feats)
+                self._log.info('done! saving as:', f'fid_{self.weight_dir}_{self.weight_init}.pt')
+                torch.save(fid, f'fid_{self.weight_dir}_{self.weight_init}.pt')
 
-                self.network.eval()
 
 
 if __name__ == '__main__':
