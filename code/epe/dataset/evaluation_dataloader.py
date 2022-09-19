@@ -50,7 +50,10 @@ class evaluation_dataloader_real(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, idx):
-        self.count += 1
-        print('batch ', self.count, idx )
-        batch = self.dataset[idx]#.to(self.device)
-        return {'images' : batch.img}
+        if idx < self.__len__():
+            self.count += 1
+            print('batch ', self.count, idx )
+            batch = self.dataset[idx]#.to(self.device)
+            return {'images' : batch.img}
+        else:
+            raise IndexError
