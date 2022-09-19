@@ -268,7 +268,7 @@ class BaseExperiment:
 
         """
 
-        actions  = ['train', 'test', 'infer']
+        actions  = ['train', 'test', 'infer', 'evaluate_model']
         networks = {}
 
         def __init__(self, args):
