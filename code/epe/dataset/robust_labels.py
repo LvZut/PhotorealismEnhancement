@@ -11,7 +11,7 @@ from .utils import mat2tensor
 logger = logging.getLogger('epe.dataset.robust')
 
 class RobustlyLabeledDataset(ImageDataset):
-	def __init__(self, name, img_and_robust_label_paths, img_transform=None, label_transform=None, return_dict=False):
+	def __init__(self, name, img_and_robust_label_paths, img_transform=None, label_transform=None):
 		""" Create an image dataset with robust labels.
 
 		name -- Name of dataset, used for debug output and finding corresponding sampling strategy
@@ -37,7 +37,6 @@ class RobustlyLabeledDataset(ImageDataset):
 		self.transform       = img_transform
 		self.label_transform = label_transform
 		self.name            = name
-		self.return_dict 	 = return_dict
 
 		self._log.info(f'Found {len(self.paths)} images.')
 		if len(self.paths) < 1:
@@ -63,8 +62,7 @@ class RobustlyLabeledDataset(ImageDataset):
 
 		img = mat2tensor(img)
 
-		if self.return_dict:
-			return {'images' : img}
+		
 
 		label_path    = self._img2label[img_path]
 		robust_labels = imageio.imread(label_path)

@@ -494,7 +494,7 @@ class EPEExperiment(ee.GANExperiment):
         def evaluate_model(self):
                 # perform evaluation with given model
                 from piq import FID
-                from dataset.evaluation_dataloader import evaluation_dataloader
+                from dataset.evaluation_dataloader import evaluation_dataloader_fake, evaluation_dataloader_real
                 self._log.info('evaluating!')
                 
                 if self.weight_init is not None:
@@ -504,9 +504,9 @@ class EPEExperiment(ee.GANExperiment):
                 self.network.eval()
 
                 # self.dataset_fake_val self.dataset_real_val
-                self.dataloader_fake = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.device)
+                self.dataloader_fake = evaluation_dataloader_fake(self.dataset_fake_val, self.network.generator, self.device)
                 
-                self.dataloader_real = torch.utils.data.DataLoader(self.dataset_real_val, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=self.collate_fn_val, worker_init_fn=seed_worker)
+                self.dataloader_real = evaluation_dataloader_real(self.dataset_real_val, self.device)
                 
                 self._log.info('Creating metric...')
                 fid_metric = FID()
