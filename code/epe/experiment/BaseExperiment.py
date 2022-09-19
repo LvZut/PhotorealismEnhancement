@@ -619,6 +619,8 @@ class BaseExperiment:
                         # pass
                 pass
 
+        def evaluate_model(self):
+                pass
 
         @classmethod
         def add_arguments(cls, parser):

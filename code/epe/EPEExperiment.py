@@ -175,7 +175,7 @@ class EPEExperiment(ee.GANExperiment):
                 # validation
                 if self.no_validation:
                         self.dataset_fake_val = None
-                elif self.action == 'test':
+                elif self.action == 'test' or self.action == 'evaluate_model':
                     self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_test_path, 4, True))
                 else:
                         self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_val_path, 4, True))
@@ -198,6 +198,9 @@ class EPEExperiment(ee.GANExperiment):
                         else:
                                 raise NotImplementedError
                         pass
+                elif self.action == 'evaluate_model':
+                        self._log.info('Creating evaluation datasets')
+                        self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
                 else:
                         self.dataset_train = None
                 # breakpoint()
@@ -481,9 +484,18 @@ class EPEExperiment(ee.GANExperiment):
         pass
 
 
-        def infer(self):
-                self.logger.info('evaluating!')
-                pass
+        def evaluate_model(self):
+                # perform evaluation with given model
+                from piq import FID
+                from dataset.evaluation_dataloader import evaluation_dataloader
+                self._log.info('evaluating!')
+                
+                # self.dataset_fake_val self.dataset_real_val
+                fake_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, self.seed_worker)
+                breakpoint()
+                        
+
+                self.network.eval()
 
 
 if __name__ == '__main__':
