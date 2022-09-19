@@ -128,7 +128,6 @@ class PfDDataset(SyntheticDataset):
                 path = []
 
                 for i in index:
-                        breakpoint()
                         img_path, gt_label_path, robust_label_path, gbuffer_path = self._paths[i]
 
                         if not gbuffer_path.exists():
