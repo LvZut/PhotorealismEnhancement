@@ -23,9 +23,9 @@ class evaluation_dataloader(Dataset):
 
     def __getitem__(self, idx):
         if self.dataloader_fake:
-            batch = self.dataloader.__getitem__(idx)
+            batch = self.dataloader[idx]
             model_out = self.gen(batch.fake)
             del batch
             return model_out
         else:
-            return self.dataloader.__getitem__(idx).real
+            return self.dataloader[idx].real
