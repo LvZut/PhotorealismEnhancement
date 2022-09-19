@@ -202,7 +202,7 @@ class EPEExperiment(ee.GANExperiment):
                         pass
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
-                        self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True), return_dict=True)
+                        self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
                         self.dataset_train = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
                 else:
                         self.dataset_train = None
