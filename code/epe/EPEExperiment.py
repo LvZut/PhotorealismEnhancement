@@ -512,14 +512,14 @@ class EPEExperiment(ee.GANExperiment):
                 self._log.info('Creating metric...')
                 fid_metric = FID()
                 
-                real_feats = fid_metric.compute_feats(self.dataloader_real)
+                fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
                 self._log.info('Finished computing first set of feats..')
                 breakpoint()
 
 
 
+                real_feats = fid_metric.compute_feats(self.dataloader_real)
 
-                fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
                 self._log.info('Finished computing second set of feats..')
                 breakpoint()
 
