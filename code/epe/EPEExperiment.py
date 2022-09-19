@@ -504,7 +504,7 @@ class EPEExperiment(ee.GANExperiment):
                 self.network.eval()
 
                 # self.dataset_fake_val self.dataset_real_val
-                self.dataloader_fake = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.device)
+                self.dataloader_fake = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.device, return_dict=True)
                 
                 self.dataloader_real = torch.utils.data.DataLoader(self.dataset_real_val, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=self.collate_fn_val, worker_init_fn=seed_worker)
                 
@@ -519,7 +519,7 @@ class EPEExperiment(ee.GANExperiment):
 
 
 
-                fake__fid_feats = fid_metric.compute_feats(self.dataloader_fake)
+                fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
 
 
                 fid: torch.Tensor = fid_metric(fake_fid_feats, real_feats)
