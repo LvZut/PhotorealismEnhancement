@@ -202,7 +202,7 @@ class EPEExperiment(ee.GANExperiment):
                         pass
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
-                        self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
+                        self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True), return_dict=True)
                         self.dataset_train = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
                 else:
                         self.dataset_train = None
@@ -504,7 +504,7 @@ class EPEExperiment(ee.GANExperiment):
                 self.network.eval()
 
                 # self.dataset_fake_val self.dataset_real_val
-                self.dataloader_fake = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.device, return_dict=True)
+                self.dataloader_fake = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.device)
                 
                 self.dataloader_real = torch.utils.data.DataLoader(self.dataset_real_val, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=self.collate_fn_val, worker_init_fn=seed_worker)
                 
