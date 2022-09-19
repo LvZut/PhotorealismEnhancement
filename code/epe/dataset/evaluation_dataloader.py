@@ -23,8 +23,8 @@ class evaluation_dataloader(Dataset):
 
     def __getitem__(self, idx):
         # get item and run inference with model before returning
-        breakpoint()
         batch = self.dataset[idx]
         model_out = self.gen(batch.to(self.device))
         del batch
+        breakpoint()
         return model_out
