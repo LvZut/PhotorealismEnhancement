@@ -511,21 +511,18 @@ class EPEExperiment(ee.GANExperiment):
                 
                 self._log.info('Creating metric...')
                 fid_metric = FID()
+                real_feats = fid_metric.compute_feats(self.dataloader_real)
+                
+                self._log.info('Finished computing first set of feats..')
+                torch.save(real_feats, 'real_feats.pt')
+                self._log.info('Finished saving first set of feats..')
                 
                 fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
-                self._log.info('Finished computing first set of feats..')
-                breakpoint()
-
-
-
-                real_feats = fid_metric.compute_feats(self.dataloader_real)
-
                 self._log.info('Finished computing second set of feats..')
-                breakpoint()
+                torch.save(fake_fid_feats, 'fake_fid_feats.pt')
 
 
                 fid: torch.Tensor = fid_metric(fake_fid_feats, real_feats)
-                breakpoint()
                 self._log.info('done! saving as:', f'fid_{self.weight_dir}_{self.weight_init}.pt')
                 torch.save(fid, f'fid_{self.weight_dir}_{self.weight_init}.pt')
 
