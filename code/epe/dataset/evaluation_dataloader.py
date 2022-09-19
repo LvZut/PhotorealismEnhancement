@@ -19,16 +19,22 @@ class evaluation_dataloader_fake(Dataset):
 
     def __len__(self):
         #return len(self.dataloader)
-        return int(len(self.dataset) / 2)
+        return int(len(self.dataset) / 4)
 
     def __getitem__(self, idx):
         if idx < self.__len__():
             # get item and run inference with model before returning
-            batch = torch.cat(self.dataset[2*idx], self.dataset[(2*idx)+1])
+            result = False
+            for i in range(4):
+                batch = self.dataset[4*idx+i]
 
-            # same clamping is used for inference during testing
-            model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
-            del batch
+                # same clamping is used for inference during testing
+                model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
+                del batch
+                if not isinstance(results, torch.Tensor):
+                    results = batch
+                else:
+                    torch.cat(results, batch)
             # breakpoint()
             return {'images' : model_out}
         else:
