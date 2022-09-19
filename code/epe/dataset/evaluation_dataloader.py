@@ -9,7 +9,7 @@ class evaluation_dataloader(Dataset):
     def __init__(self, dataset, gen, transform=None):
         """
         Args:
-            dataloader (Torch dataloader) : Feeds images to generator
+            dataset (Torch dataset) : Feeds images to generator
             gen (PassthruGenerator) : Generator that performs inference on images
         """
         self.gen = gen
@@ -22,6 +22,7 @@ class evaluation_dataloader(Dataset):
 
     def __getitem__(self, idx):
         # get item and run inference with model before returning
+        breakpoint()
         batch = self.dataset[idx]
         model_out = self.gen(batch.fake)
         del batch
