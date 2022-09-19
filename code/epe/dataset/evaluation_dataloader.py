@@ -6,7 +6,7 @@ class evaluation_dataloader_fake(Dataset):
     """ Wrapper around dataloader that performs inference
         using generator model given in class init """
 
-    def __init__(self, dataset, gen, device, transform=None):
+    def __init__(self, dataset, gen, device, batch_size transform=None):
         """
         Args:
             dataset (Torch dataset) : Feeds images to generator
@@ -16,6 +16,7 @@ class evaluation_dataloader_fake(Dataset):
         self.transform = transform
         self.dataset = dataset
         self.device = device
+        self.batch_size = batch_size
 
     def __len__(self):
         #return len(self.dataloader)
@@ -23,9 +24,9 @@ class evaluation_dataloader_fake(Dataset):
 
     def __getitem__(self, idx):
         print(idx)
-        if idx < self.__len__():
+        if (idx + self.batch_size - 1) < self.__len__():
             # get item and run inference with model before returning
-            batch = self.dataset[idx]
+            batch = self.dataset[idx:idx+self.batch_size]
 
             # same clamping is used for inference during testing
             model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
@@ -39,7 +40,7 @@ class evaluation_dataloader_real(Dataset):
     """ Wrapper around dataloader that performs inference
         using generator model given in class init """
 
-    def __init__(self, dataset, device, transform=None):
+    def __init__(self, dataset, device, batch_size, transform=None):
         """
         Args:
             dataset (Torch dataset) : Feeds images to generator
@@ -48,16 +49,16 @@ class evaluation_dataloader_real(Dataset):
         self.transform = transform
         self.dataset = dataset
         self.device = device
-        self.count = 0
+        self.batch_size = batch_size
 
     def __len__(self):
         return len(self.dataset)
 
     def __getitem__(self, idx):
-        if idx < self.__len__():
+        if (idx + self.batch_size - 1) < self.__len__():
             # self.count += 1
             # print('batch ', self.count, idx )
-            batch = self.dataset[idx]#.to(self.device)
+            batch = self.dataset[idx:idx+self.batch_size]#.to(self.device)
             return {'images' : batch.img}
         else:
             raise IndexError
