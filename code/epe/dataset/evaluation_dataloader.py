@@ -25,6 +25,7 @@ class evaluation_dataloader_fake(Dataset):
         if idx < self.__len__():
             # get item and run inference with model before returning
             result = False
+            print(idx)
             for i in range(4):
                 batch = self.dataset[4*idx+i]
 
