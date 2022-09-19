@@ -32,6 +32,8 @@ from torch.utils.tensorboard import SummaryWriter
 from epe.mseg_inference import mseg_task
 from mseg_semantic.utils import config
 
+from .BaseExperiment import seed_worker
+
 logger = logging.getLogger('main')
 
 
