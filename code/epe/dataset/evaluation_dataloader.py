@@ -6,7 +6,7 @@ class evaluation_dataloader_fake(Dataset):
     """ Wrapper around dataloader that performs inference
         using generator model given in class init """
 
-    def __init__(self, dataset, gen, device, batch_size, transform=None):
+    def __init__(self, dataset, gen, device, transform=None):
         """
         Args:
             dataset (Torch dataset) : Feeds images to generator
@@ -16,17 +16,15 @@ class evaluation_dataloader_fake(Dataset):
         self.transform = transform
         self.dataset = dataset
         self.device = device
-        self.batch_size = batch_size
 
     def __len__(self):
         #return len(self.dataloader)
-        return len(self.dataset)
+        return int(len(self.dataset) / 2)
 
     def __getitem__(self, idx):
-        print(idx)
-        if (idx + self.batch_size - 1) < self.__len__():
+        if idx < self.__len__():
             # get item and run inference with model before returning
-            batch = self.dataset[idx:idx+self.batch_size]
+            batch = torch.cat(self.dataset[2*idx], self.dataset[(2*idx)+1])
 
             # same clamping is used for inference during testing
             model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
