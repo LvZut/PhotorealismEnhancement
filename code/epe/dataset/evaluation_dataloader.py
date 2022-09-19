@@ -26,5 +26,5 @@ class evaluation_dataloader(Dataset):
         batch = self.dataset[idx]
         model_out = self.gen(batch.to(self.device))
         del batch
-        breakpoint()
-        return model_out
+        # breakpoint()
+        return model_out[0]
