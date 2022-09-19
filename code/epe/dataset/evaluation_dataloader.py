@@ -14,7 +14,7 @@ class evaluation_dataloader(Dataset):
         """
         self.gen = gen
         self.transform = transform
-        self.dataloader = torch.utils.data.DataLoader(self.dataset_fake_val, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=collate_fn_val, worker_init_fn=seed_worker)
+        self.dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=collate_fn_val, worker_init_fn=seed_worker)
         
 
     def __len__(self):
