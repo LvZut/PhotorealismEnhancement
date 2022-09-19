@@ -24,7 +24,9 @@ class evaluation_dataloader(Dataset):
     def __getitem__(self, idx):
         # get item and run inference with model before returning
         batch = self.dataset[idx]
-        model_out = self.gen(batch.to(self.device))
+
+        # same clamping is used for inference during testing
+        model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
         del batch
-        breakpoint()
+        # breakpoint()
         return {'images' : model_out}
