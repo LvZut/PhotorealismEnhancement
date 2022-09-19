@@ -496,7 +496,7 @@ class EPEExperiment(ee.GANExperiment):
                         pass
 
                 # self.dataset_fake_val self.dataset_real_val
-                fake_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, self.seed_worker)
+                fake_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, seed_worker)
                 breakpoint()
                         
 
@@ -504,7 +504,7 @@ class EPEExperiment(ee.GANExperiment):
 
 
 if __name__ == '__main__':
-
+        print(seed_worker)
         parser = ArgumentParser()
         EPEExperiment.add_arguments(parser)
         args = parser.parse_args()
