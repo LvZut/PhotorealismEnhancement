@@ -506,7 +506,7 @@ class EPEExperiment(ee.GANExperiment):
                 # self.dataset_fake_val self.dataset_real_val
                 self.dataloader_fake = evaluation_dataloader_fake(self.dataset_fake_val, self.network.generator, self.device, self.batch_size)
                 
-                self.dataloader_real = evaluation_dataloader_real(self.dataset_real_val, self.device, self.batch_size)
+                self.dataloader_real = evaluation_dataloader_real(self.dataset_real_val, self.device)
                 self._log.info(f'Currently using {len(self.dataloader_real)} real samples..')
                 
                 self._log.info('Creating metric...')

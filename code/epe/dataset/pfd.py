@@ -113,7 +113,7 @@ class PfDDataset(SyntheticDataset):
 
         def __getitem__(self, index):
 
-                index  = index % self.__len__()
+                # index  = index % self.__len__()
                 #img_path, robust_label_path, gbuffer_path, gt_label_path = self._paths[index]
                 img_path, gt_label_path, robust_label_path, gbuffer_path = self._paths[index]
 
