@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from re import L
 
 import imageio
 import numpy as np
@@ -115,56 +116,72 @@ class PfDDataset(SyntheticDataset):
 
                 # index  = index % self.__len__()
                 #img_path, robust_label_path, gbuffer_path, gt_label_path = self._paths[index]
-                img_path, gt_label_path, robust_label_path, gbuffer_path = self._paths[index]
+
+                if not isinstance(index, list):
+                        index = [index]
 
 
-                if not gbuffer_path.exists():
-                        self._log.error(f'Gbuffers at {gbuffer_path} do not exist.')
-                        raise FileNotFoundError
-                        pass
+                images = torch.Tensor([])
+                gbuffers_all = torch.Tensor([])
+                gt_labels_all = torch.Tensor([])
+                robust_labels_all = torch.Tensor([])
 
-                #data = np.load(gbuffer_path,allow_pickle=True,fix_imports=True,encoding='latin1')
-                data = np.load(gbuffer_path)
+                for i in index:
+                        img_path, gt_label_path, robust_label_path, gbuffer_path =self._paths[index]
 
-                # non-fake gbuffers contain img and gt_labels as well
-                if self.gbuffers == 'fake':
+                        if not gbuffer_path.exists():
+                                self._log.error(f'Gbuffers at {gbuffer_path} do not exist.')
+                                raise FileNotFoundError
+                                pass
 
-                        # reduced dtypes from float32 to float16
-                        img       = mat2tensor(imageio.imread(img_path).astype(np.float16) / 255.0)
-                        gbuffers  = mat2tensor(data['data'].astype(np.float16))
-                        gt_labels = material_from_gt_label(imageio.imread(gt_label_path))
-                        if gt_labels.shape[0] != img.shape[-2] or gt_labels.shape[1] != img.shape[-1]:
-                                gt_labels = resize(gt_labels, (img.shape[-2], img.shape[-1]), anti_aliasing=True, mode='constant')
-                        gt_labels = mat2tensor(gt_labels)
-                        pass
-                else:
-                        img       = mat2tensor(data['img'].astype(np.float16) / 255.0)
-                        gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))
-                        gt_labels = mat2tensor(data['shader'].astype(np.float16))
-                        pass
+                        #data = np.load(gbuffer_path,allow_pickle=True,fix_imports=True,encoding='latin1')
+                        data = np.load(gbuffer_path)
+
+                        # non-fake gbuffers contain img and gt_labels as well
+                        if self.gbuffers == 'fake':
+
+                                # reduced dtypes from float32 to float16
+                                img       = mat2tensor(imageio.imread(img_path).astype(np.float16) / 255.0)
+                                gbuffers  = mat2tensor(data['data'].astype(np.float16))
+                                gt_labels = material_from_gt_label(imageio.imread(gt_label_path))
+                                if gt_labels.shape[0] != img.shape[-2] or gt_labels.shape[1] != img.shape[-1]:
+                                        gt_labels = resize(gt_labels, (img.shape[-2], img.shape[-1]), anti_aliasing=True, mode='constant')
+                                gt_labels = mat2tensor(gt_labels)
+                                pass
+                        else:
+                                img       = mat2tensor(data['img'].astype(np.float16) / 255.0)
+                                gbuffers  = mat2tensor(data['gbuffers'].astype(np.float16))
+                                gt_labels = mat2tensor(data['shader'].astype(np.float16))
+                                pass
 
 
-                # currently boolean one-hot encoding
-                # (3, 720, 1280), 44 should be self.num_classes
-                gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)
+                        # currently boolean one-hot encoding
+                        # (3, 720, 1280), 44 should be self.num_classes
+                        gt_labels = torch.nn.functional.one_hot(gt_labels[0].long(), (44)).permute(2,0,1)
 
-                # Convert rgb labels to class labels
-                if torch.max(gt_labels) > 128:
-                        gt_labels = gt_labels / 255.0
-                        pass
+                        # Convert rgb labels to class labels
+                        if torch.max(gt_labels) > 128:
+                                gt_labels = gt_labels / 255.0
+                                pass
 
-                if self._gbuf_mean is not None:
-                        gbuffers = center(gbuffers, self._gbuf_mean, self._gbuf_std)
-                        pass
+                        if self._gbuf_mean is not None:
+                                gbuffers = center(gbuffers, self._gbuf_mean, self._gbuf_std)
+                                pass
 
-                if not robust_label_path.exists():
-                        self._log.error(f'Robust labels at {robust_label_path} do not exist.')
-                        raise FileNotFoundError
-                        pass
+                        if not robust_label_path.exists():
+                                self._log.error(f'Robust labels at {robust_label_path} do not exist.')
+                                raise FileNotFoundError
+                                pass
 
-                robust_labels = imageio.imread(robust_label_path)
-                robust_labels = torch.LongTensor(robust_labels[:,:]).unsqueeze(0)
+                        robust_labels = imageio.imread(robust_label_path)
+                        robust_labels = torch.LongTensor(robust_labels[:,:]).unsqueeze(0)
                 
+                        images = torch.cat((images, img))
+                        gbuffers_all = torch.cat((gbuffers_all, gbuffers))
+                        gt_labels_all = torch.cat((gt_labels_all, gt_labels_all))
+                        robust_labels_all = torch.cat((robust_labels_all, robust_labels))
+                        path += [img_path]
+
                 return EPEBatch(img, gbuffers=gbuffers, gt_labels=gt_labels, robust_labels=robust_labels, path=img_path, coords=None)
 
 
