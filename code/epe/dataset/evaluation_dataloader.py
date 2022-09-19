@@ -33,7 +33,7 @@ class evaluation_dataloader_fake(Dataset):
                 if not isinstance(result, torch.Tensor):
                     result = model_out
                 else:
-                    torch.cat(result, model_out)
+                    torch.cat((result, model_out))
                 del batch
             # breakpoint()
             return {'images' : result}
