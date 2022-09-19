@@ -32,11 +32,11 @@ class evaluation_dataloader_fake(Dataset):
                 model_out = self.gen(batch.to(self.device)).clamp(min=0,max=1)
                 del batch
                 if not isinstance(results, torch.Tensor):
-                    results = batch
+                    result = batch
                 else:
-                    torch.cat(results, batch)
+                    torch.cat(result, batch)
             # breakpoint()
-            return {'images' : model_out}
+            return {'images' : result}
         else:
             raise IndexError
 
