@@ -177,7 +177,7 @@ class EPEExperiment(ee.GANExperiment):
                 # validation
                 if self.no_validation:
                         self.dataset_fake_val = None
-                elif self.action == 'test' or self.action == 'evaluate_model':
+                elif self.action == 'test':
                     self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_test_path, 4, True))
                 else:
                         self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_val_path, 4, True))
@@ -203,7 +203,7 @@ class EPEExperiment(ee.GANExperiment):
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
                         self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
-                        self.dataset_train = None
+                        self.dataset_train = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
                 else:
                         self.dataset_train = None
                 # breakpoint()
@@ -215,7 +215,11 @@ class EPEExperiment(ee.GANExperiment):
                 self._log.info('Initializing networks ...')
 
                 # network arch depends on dataset
-                if self.dataset_train is not None:
+                if self.action != 'evaluate_model':
+                        self.gen_cfg['num_classes']          = self.dataset_train.num_classes
+                        self.gen_cfg['num_gbuffer_channels'] = self.dataset_train.num_gbuffer_channels
+                        self.gen_cfg['cls2gbuf']             = self.dataset_train.cls2gbuf
+                elif self.dataset_train is not None:
                         self.gen_cfg['num_classes']          = self.dataset_train.source.num_classes
                         self.gen_cfg['num_gbuffer_channels'] = self.dataset_train.source.num_gbuffer_channels
                         self.gen_cfg['cls2gbuf']             = self.dataset_train.source.cls2gbuf
@@ -500,16 +504,16 @@ class EPEExperiment(ee.GANExperiment):
                 self.network.eval()
 
                 # self.dataset_fake_val self.dataset_real_val
-                fake_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, seed_worker)
+                self.dataloader_fake = evaluation_dataloader(self.dataset_fake_val, self.network.generator)
                 
-                real_loader = evaluation_dataloader(self.dataset_fake_val, self.network.generator, self.collate_fn_val, seed_worker, dataloader_fake=False)
+                self.dataloader_real = torch.utils.data.DataLoader(self.dataset_real_val, batch_size=1, shuffle=True, num_workers=0, pin_memory=True, drop_last=False, collate_fn=self.collate_fn_val, worker_init_fn=seed_worker)
                 
                 self._log.info('Creating metric...')
                 fid_metric = FID()
                 
-                fake_feats = fid_metric.compute_feats(fake_loader)
+                fake_feats = fid_metric.compute_feats(self.dataloader_fake)
                 self._log.info('Finished computing first set of feats..')
-                real_feats = fid_metric.compute_feats(real_loader)
+                real_feats = fid_metric.compute_feats(self.dataloader_real)
                 self._log.info('Finished computing second set of feats..')
                 fid: torch.Tensor = fid_metric(fake_feats, real_feats)
                 self._log.info('done! saving as:', f'fid_{self.weight_dir}_{self.weight_init}.pt')
