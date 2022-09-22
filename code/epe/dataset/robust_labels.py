@@ -22,7 +22,12 @@ class RobustlyLabeledDataset(ImageDataset):
 		self._log = logging.getLogger(f'epe.dataset.{name}')
 
 		self._img2label = {}
-		for img_path,lab_path in img_and_robust_label_paths:
+
+		import random
+		random.seed = 1
+		self._log.info('sampling random real data')
+		random_subset = random.sample(img_and_robust_label_paths, 75000)
+		for img_path,lab_path in random_subset:
 			img_path = Path(img_path)
 			lab_path = Path(lab_path)
 
