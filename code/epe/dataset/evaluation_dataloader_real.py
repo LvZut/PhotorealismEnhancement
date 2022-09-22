@@ -24,7 +24,7 @@ class evaluation_dataloader_real(Dataset):
 
     def __getitem__(self, idx):
         # get item and run inference with model before returning
-        if idx % 100 == 0:
+        if idx % 100 == 4:
             self.logger.info('real: ', idx)
         batch = self.dataset[idx]
         return {'images' : batch.imgs}
