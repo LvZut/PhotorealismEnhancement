@@ -25,7 +25,8 @@ class evaluation_dataloader_fake(Dataset):
     def __getitem__(self, idx):
         if idx < self.__len__():
             # get item and run inference with model before returning
-            print(idx*self.batch_size)
+            if idx % 100 == 0:
+                print(idx*self.batch_size)
             batch = self.dataset[[i for i in range(idx*self.batch_size, (idx*self.batch_size)+self.batch_size)]]
 
             # same clamping is used for inference during testing
