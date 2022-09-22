@@ -514,7 +514,7 @@ class EPEExperiment(ee.GANExperiment):
                 real_feats = fid_metric.compute_feats(self.dataloader_real)
                 
                 self._log.info('Finished computing first set of feats..')
-                torch.save(real_feats, 'real_feats.pt')
+                torch.save(real_feats, 'real_feats_75k.pt')
                 self._log.info('Finished saving first set of feats..')
                 
                 fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
