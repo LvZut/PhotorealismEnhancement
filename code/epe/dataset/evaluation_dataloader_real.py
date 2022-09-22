@@ -23,6 +23,7 @@ class evaluation_dataloader_real(Dataset):
 
     def __getitem__(self, idx):
         # get item and run inference with model before returning
+        if idx % 100 == 0:
+            print('real: ', idx)
         batch = self.dataset[idx]
-        breakpoint()
         return {'images' : batch.imgs}
