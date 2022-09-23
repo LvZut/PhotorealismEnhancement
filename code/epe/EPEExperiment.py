@@ -202,7 +202,9 @@ class EPEExperiment(ee.GANExperiment):
                         pass
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
-                        self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
+
+                        # features have already been extracted
+                        # self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
                         # self.dataset_train = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
                 else:
                         self.dataset_train = None
@@ -488,7 +490,6 @@ class EPEExperiment(ee.GANExperiment):
                 self.writer.add_image('Real Image', old_img[0], id)
                 self.writer.add_image('Fake Image', new_img[0], id)
                 pass
-        pass
 
 
         def evaluate_model(self):
@@ -530,7 +531,6 @@ class EPEExperiment(ee.GANExperiment):
 
 
 if __name__ == '__main__':
-        print(seed_worker)
         parser = ArgumentParser()
         EPEExperiment.add_arguments(parser)
         args = parser.parse_args()
