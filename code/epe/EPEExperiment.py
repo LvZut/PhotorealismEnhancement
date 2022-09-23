@@ -202,6 +202,7 @@ class EPEExperiment(ee.GANExperiment):
                         pass
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
+                        self.dataset_train = None
 
                         # features have already been extracted
                         # self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
@@ -217,7 +218,7 @@ class EPEExperiment(ee.GANExperiment):
                 self._log.info('Initializing networks ...')
 
                 # network arch depends on dataset
-                elif self.dataset_train is not None:
+                if self.dataset_train is not None:
                         self.gen_cfg['num_classes']          = self.dataset_train.source.num_classes
                         self.gen_cfg['num_gbuffer_channels'] = self.dataset_train.source.num_gbuffer_channels
                         self.gen_cfg['cls2gbuf']             = self.dataset_train.source.cls2gbuf
