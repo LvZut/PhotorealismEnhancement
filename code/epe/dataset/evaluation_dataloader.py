@@ -22,12 +22,12 @@ class evaluation_dataloader_fake(Dataset):
 
     def __len__(self):
         # return len(self.dataset)
-        return 25000
+        return 250
 
     def __getitem__(self, idx):
         if idx < self.__len__():
             # get item and run inference with model before returning
-            if idx > self.idx_counter:
+            if idx*self.batch_size > self.idx_counter:
                 self.idx_counter = idx
                 self.logger.info(idx*self.batch_size)
             batch = self.dataset[[i for i in range(idx*self.batch_size, (idx*self.batch_size)+self.batch_size)]]
