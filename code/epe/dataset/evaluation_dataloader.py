@@ -22,7 +22,7 @@ class evaluation_dataloader_fake(Dataset):
 
     def __len__(self):
         # return len(self.dataset)
-        return 128
+        return 25000
 
     def __getitem__(self, idx):
         if idx*self.batch_size < self.__len__():
