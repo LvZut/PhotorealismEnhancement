@@ -522,8 +522,8 @@ class EPEExperiment(ee.GANExperiment):
 
 
                 fid: torch.Tensor = fid_metric(fake_fid_feats, real_feats)
-                self._log.info('done! saving as:', f'fid_{self.weight_dir}_{self.weight_init}.pt')
-                torch.save(fid, f'fid_{self.weight_dir}_{self.weight_init}.pt')
+                self._log.info(f'done! saving as: large_fid.pt')
+                torch.save(fid, 'large_fid.pt')
 
 
 
