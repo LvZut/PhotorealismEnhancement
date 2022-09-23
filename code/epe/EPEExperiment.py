@@ -177,8 +177,8 @@ class EPEExperiment(ee.GANExperiment):
                 # validation
                 if self.no_validation:
                         self.dataset_fake_val = None
-                elif self.action == 'test':
-                    self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_test_path, 4, True))
+                elif self.action == 'test' or self.action == 'evaluate_model':
+                        self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_test_path, 4, True))
                 else:
                         self.dataset_fake_val = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_val_path, 4, True))
                         pass
@@ -203,7 +203,7 @@ class EPEExperiment(ee.GANExperiment):
                 elif self.action == 'evaluate_model':
                         self._log.info('Creating evaluation datasets')
                         self.dataset_real_val = ds.RobustlyLabeledDataset(self.real_name, ds.utils.read_filelist(self.real_basepath, 2, True))
-                        self.dataset_train = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
+                        # self.dataset_train = fake_datasets[self.fake_name](ds.utils.read_filelist(self.fake_train_path, 4, True))
                 else:
                         self.dataset_train = None
                 # breakpoint()
@@ -506,17 +506,17 @@ class EPEExperiment(ee.GANExperiment):
                 # self.dataset_fake_val self.dataset_real_val
                 self.dataloader_fake = evaluation_dataloader_fake(self.dataset_fake_val, self.network.generator, self.device, self.batch_size, self._log)
                 
-                self.dataloader_real = evaluation_dataloader_real(self.dataset_real_val, self.device, self._log)
-                self._log.info(f'Currently using {len(self.dataloader_real)} real samples..')
+                # self.dataloader_real = evaluation_dataloader_real(self.dataset_real_val, self.device, self._log)
+                self._log.info(f'Currently using {len(self.dataloader_fake)} fake samples..')
                 
                 self._log.info('Creating metric...')
                 fid_metric = FID()
                 self._log.info('Extracting Features...')
-                real_feats = fid_metric.compute_feats(self.dataloader_real)
+                # real_feats = fid_metric.compute_feats(self.dataloader_real)
                 
-                self._log.info('Finished computing first set of feats..')
-                torch.save(real_feats, 'real_feats_25k.pt')
-                self._log.info('Finished saving first set of feats..')
+                # self._log.info('Finished computing first set of feats..')
+                real_feats = torch.load('real_feats_25k.pt')
+                self._log.info('Finished loading real feats..')
                 
                 fake_fid_feats = fid_metric.compute_feats(self.dataloader_fake)
                 self._log.info('Finished computing second set of feats..')
