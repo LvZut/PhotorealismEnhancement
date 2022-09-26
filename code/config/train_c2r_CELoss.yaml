@@ -1,6 +1,6 @@
 ---
-weight_dir: c2r/c2r_CELoss # path to folder where checkpoints should be stored
-name_load: c2r_CELoss-190000
+weight_dir: c2r/c2r_CELoss_01 # path to folder where checkpoints should be stored
+name_load: c2r_CELoss_01-110000
 
 common:
   unpin: false # disable pinning for the loader
