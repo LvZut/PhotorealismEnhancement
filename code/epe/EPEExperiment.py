@@ -500,6 +500,8 @@ class EPEExperiment(ee.GANExperiment):
                         pass
 
                 self.network.eval()
+                self._log.info(f'fake_fid_feats_{self.vgg_loss}_{self.vgg_weight}.pt')
+                exit(1)
 
                 # self.dataset_fake_val self.dataset_real_val
                 self.dataloader_fake = evaluation_dataloader_fake(self.dataset_fake_val, self.network.generator, self.device, self.batch_size, self._log)
