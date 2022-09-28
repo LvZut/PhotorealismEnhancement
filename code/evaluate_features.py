@@ -3,7 +3,7 @@ import torch
 from piq import FID, KID, PR
 
 models = ['baseline', 'large', 'CELoss', 'CELoss_ft']
-model_features = {'baseline' : 0, 'large' : 0, 'CELoss' : 0, 'CELoss_ft' : 0} # fill in model features pt
+model_features = {'baseline' : 0, 'large' : 'large_fid.pt', 'CELoss' : "fake_fid_feats_CELoss.pt", 'CELoss_ft' : "fake_fid_feats_CELoss_ft.pt"} # fill in model features pt
 
 real_feats = torch.load('real_feats_25k.pt')
 
